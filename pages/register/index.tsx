@@ -820,9 +820,14 @@ export default function Home() {
 
   useEffect(() => {
     if (tokenEvents.data && tokenEvents.data.length > lastReadApprovalEvent){
-      setLastReadApprovalEvent(tokenEvents.data.length)
-      const approved = expressAmountFrom18Decimals(tokenEvents.data[0].data.value.toString(), tokenContractRead.data.toString())
-      alert(`Token approved with allowance ${approved}`)
+      try{
+        setLastReadApprovalEvent(tokenEvents.data.length)
+        const approved = expressAmountFrom18Decimals(tokenEvents.data[0].data.value.toString(), tokenContractRead.data.toString())
+        alert(`Token approved with allowance ${approved}`)
+      }
+      catch(e){
+        console.log(e)
+      }
     }
     
   }, [lastReadApprovalEvent, setLastReadApprovalEvent, tokenEvents] )
@@ -844,9 +849,14 @@ export default function Home() {
   );
 
   useEffect(() => {
-    if (airdropEvents.data && airdropEvents.data.length > lastReadEvent){
-      setLastReadEvent(airdropEvents.data.length)
-      alert(`Self-claim airdrop registered, ID #${airdropEvents.data[0].data.id.toString()}`)
+    try{
+      if (airdropEvents.data && airdropEvents.data.length > lastReadEvent){
+        setLastReadEvent(airdropEvents.data.length)
+        alert(`Self-claim airdrop registered, ID #${airdropEvents.data[0].data.id.toString()}`)
+      }
+    }
+    catch(e){
+      console.log(e)
     }
     
   }, [lastReadEvent, setLastReadEvent, airdropEvents] )
@@ -899,7 +909,7 @@ export default function Home() {
               await contract.call("approve", [contractAddress, "1000000000000000000"])
             }}
             onSuccess={(result) => alert("Token approval submitted")}
-            onError={(error) => alert("Something went wrong!")}
+            onError={(error) => alert("Something went wrong (Approving tokens)!")}
           >
             Approve selfclaim
           </Web3Button>
@@ -926,7 +936,7 @@ export default function Home() {
               ])
             }}
             onSuccess={(result) => alert("Register airdrop submitted")}
-            onError={(error) => alert("Something went wrong!")}
+            onError={(error) => alert("Something went wrong (Registering selfclaim)!")}
           >
             Register airdrop
           </Web3Button>
