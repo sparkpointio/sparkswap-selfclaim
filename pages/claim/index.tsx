@@ -11,6 +11,7 @@ function hexToString (hex: string) {
 }
 
 export default function Home() {
+  const wallet = useAddress();
   const proofs = fetchProofs()
 
   return (
@@ -39,6 +40,7 @@ export default function Home() {
                 token={airdrop.tokenAddress}
                 amount={expressAmountFrom18Decimals(hexToString(proof.claims.amount), airdrop.tokenDecimal)}
                 buttonText={"Claim"}
+                proof={[airdrop.id, proof.claims.index, wallet, hexToString(proof.claims.amount), proof.claims.proof]}
               />
             ))
           ))
