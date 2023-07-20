@@ -12,7 +12,10 @@ interface AddressAmount {
 }
 
 export default function Home() {
+  // User's connected wallet address 
   const wallet = useAddress();
+
+  // Self-claim airdrop contract address and ABI
   const contractAddress = process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS ? process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS : ""
   const contractABI = [
     {
@@ -403,6 +406,8 @@ export default function Home() {
       "type": "function"
     }
   ]
+
+  // ERC20 Token ABI
   const erc20ABI = [
     {
       "inputs": [
@@ -783,11 +788,15 @@ export default function Home() {
     }
   ]
 
+  // Form default values and value holders
   const [ tokenAddress, setTokenAddress ] = useState("0xe09B8661D80CF24dB230A167969d18B94a5a3266")
   const [ address, setAddress ] = useState("0x373233a38ae21cf0c4f9de11570e7d5aa6824a1e, 145 \n0x8A672715e042f6e9d9B25C2ce9F84210e8206EF1, 1.069 \n0xC4515C02c334155bc60d86BD6F1119f58ea136e2, 10.81 \n0xe270bc73d658cbd72f721cb8c649aebf91b98d2b, 0.058")
+  
+  // Use contract for ERC20 contract
   const tokenContract = useContract(tokenAddress);
   const tokenContractRead = useContractRead(tokenContract.contract, "decimals")
 
+  // Event listeners for Register events
   const airdropContract = useContract(contractAddress);
   const [ lastReadEvent, setLastReadEvent ] = useState(0);
   const airdropEvents = useContractEvents(
