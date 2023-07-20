@@ -10,6 +10,14 @@ export default function Home() {
       <h2 className="text-3xl tracking-tight text-gray-500">
         Create self-claim airdrop
       </h2>
+      <div className="w-52 mx-auto mt-4">
+        <button
+          type="submit"
+          className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+        >
+          Connect wallet
+        </button>
+      </div>
       <div className="w-5/6 mx-auto">
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2 font-medium">
