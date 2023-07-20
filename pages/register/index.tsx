@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { ConnectWallet } from "@thirdweb-dev/react";
-import { Web3Button, useContractRead, useContractEvents, useContract, useAddress } from "@thirdweb-dev/react";
+import { ConnectWallet, Web3Button, useContractRead, useContractEvents, useContract, useAddress } from "@thirdweb-dev/react";
 import { expressAmountWith18Decimals, expressAmountFrom18Decimals, processInput, accessAPI } from "../../hooks/registerAirdrop";
 
 interface AddressAmount {
