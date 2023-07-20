@@ -1,9 +1,9 @@
 "use client"
 
 import Link from "next/link";
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { ConnectWallet } from "@thirdweb-dev/react";
-import { Web3Button, useContractRead, useContract } from "@thirdweb-dev/react";
+import { Web3Button, useContractRead, useContractEvents, useContract, useAddress } from "@thirdweb-dev/react";
 import { expressAmountWith18Decimals, processInput, accessAPI } from "../../hooks/registerAirdrop";
 
 interface AddressAmount {
@@ -12,7 +12,8 @@ interface AddressAmount {
 }
 
 export default function Home() {
-  const contractAddress = "0xD667c3C39dB57abbbd74FaCD718dad1c93A2D6e3"
+  const wallet = useAddress();
+  const contractAddress = process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS ? process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS : ""
   const contractABI = [
     {
       "inputs": [],
@@ -85,6 +86,31 @@ export default function Home() {
       "type": "function"
     },
     {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Claim",
+      "type": "event"
+    },
+    {
       "inputs": [],
       "name": "initialize",
       "outputs": [],
@@ -129,9 +155,34 @@ export default function Home() {
         }
       ],
       "name": "register",
-      "outputs": [],
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "projectOwner",
+          "type": "address"
+        }
+      ],
+      "name": "Register",
+      "type": "event"
     },
     {
       "inputs": [],
@@ -737,6 +788,30 @@ export default function Home() {
   const tokenContract = useContract(tokenAddress);
   const tokenContractRead = useContractRead(tokenContract.contract, "decimals")
 
+  const airdropContract = useContract(contractAddress);
+  const [ lastReadEvent, setLastReadEvent ] = useState(0);
+  const airdropEvents = useContractEvents(
+    airdropContract.contract,
+    "Register",
+    {
+      queryFilter: {
+        filters: {
+          projectOwner: wallet, // e.g. Only events where tokenId = 123
+        },
+        order: "desc", // Order of events ("asc" or "desc")
+      },
+      subscribe: true, // Subscribe to new events
+    },
+  );
+
+  useEffect(() => {
+    if (airdropEvents.data && airdropEvents.data.length > lastReadEvent){
+      setLastReadEvent(airdropEvents.data.length)
+      alert(`Self-claim airdrop registered, ID #${airdropEvents.data[0].data.id.toString()}`)
+    }
+    
+  }, [lastReadEvent, setLastReadEvent, airdropEvents] )
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
       <h1 className="text-5xl font-bold tracking-tight text-gray-400">
@@ -782,8 +857,9 @@ export default function Home() {
             contractAddress={tokenAddress}
             contractAbi={erc20ABI}
             action={async (contract) => {
-              contract.call("approve", [contractAddress, "1000000000000000000"])
+              await contract.call("approve", [contractAddress, "1000000000000000000"])
             }}
+            onSuccess={(result) => alert("Token approval submitted")}
           >
             Approve selfclaim
           </Web3Button>
@@ -803,12 +879,13 @@ export default function Home() {
 
               const expressAmount = expressAmountWith18Decimals(totalAmount.toString(), tokenContractRead.data.toString())
 
-              contract.call("register", [
+              await contract.call("register", [
                 merkleOutput.merkleRoot,
                 tokenAddress,
                 expressAmount.toString()
               ])
             }}
+            onSuccess={(result) => alert("Register airdrop submitted")}
           >
             Register airdrop
           </Web3Button>
