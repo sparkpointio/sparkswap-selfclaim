@@ -9,7 +9,7 @@ const activeChain = "binance-testnet";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider activeChain={activeChain} clientId="5c68ace36f1482f690b2f8f6c1b27b43">
+    <ThirdwebProvider activeChain={activeChain} clientId={process.env.THIRDWEB_ID}>
       <Component {...pageProps} />
     </ThirdwebProvider>
   );
