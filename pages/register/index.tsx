@@ -899,6 +899,7 @@ export default function Home() {
               await contract.call("approve", [contractAddress, "1000000000000000000"])
             }}
             onSuccess={(result) => alert("Token approval submitted")}
+            onError={(error) => alert("Something went wrong!")}
           >
             Approve selfclaim
           </Web3Button>
@@ -925,6 +926,7 @@ export default function Home() {
               ])
             }}
             onSuccess={(result) => alert("Register airdrop submitted")}
+            onError={(error) => alert("Something went wrong!")}
           >
             Register airdrop
           </Web3Button>
