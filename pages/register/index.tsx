@@ -16,6 +16,9 @@ import {
   processInput,
   accessAPI,
 } from "../../hooks/registerAirdrop";
+import { NavigationMenu } from "../../components/NavigationMenu";
+import { navigationLinks } from "../index";
+import { useRouter } from "next/router";
 
 interface AddressAmount {
   address: string;
@@ -25,6 +28,7 @@ interface AddressAmount {
 export default function Home() {
   // User's connected wallet address
   const wallet = useAddress();
+  const router = useRouter();
 
   // Self-claim airdrop contract address and ABI
   const contractAddress = process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS
@@ -877,6 +881,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background1">
+      <NavigationMenu navigationLinks={navigationLinks} router={router} />
       <h1 className="text-5xl font-bold tracking-tight text-text1">
         Welcome, Airdrop Creators
       </h1>

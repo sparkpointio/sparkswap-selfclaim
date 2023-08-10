@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const navigationLinks = [
+export const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/claim", label: "Claim" },
   { href: "/register", label: "Register" },
