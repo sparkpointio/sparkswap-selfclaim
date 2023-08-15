@@ -852,19 +852,15 @@ export default function Home() {
 
   // Event listeners for Create events
   const [lastReadEvent, setLastReadEvent] = useState(0);
-  const airdropEvents = useContractEvents(
-    airdropContract.contract,
-    "Create",
-    {
-      queryFilter: {
-        filters: {
-          projectOwner: wallet, // e.g. Only events where tokenId = 123
-        },
-        order: "desc", // Order of events ("asc" or "desc")
+  const airdropEvents = useContractEvents(airdropContract.contract, "Create", {
+    queryFilter: {
+      filters: {
+        projectOwner: wallet, // e.g. Only events where tokenId = 123
       },
-      subscribe: true, // Subscribe to new events
-    }
-  );
+      order: "desc", // Order of events ("asc" or "desc")
+    },
+    subscribe: true, // Subscribe to new events
+  });
 
   useEffect(() => {
     try {
@@ -880,7 +876,7 @@ export default function Home() {
   }, [lastReadEvent, setLastReadEvent, airdropEvents]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background1 mt-12">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
       <NavigationMenu navigationLinks={navigationLinks} router={router} />
       <h1 className="text-5xl font-bold tracking-tight text-text1">
         Welcome, Airdrop Creators
