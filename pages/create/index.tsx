@@ -880,7 +880,7 @@ export default function Home() {
   }, [lastReadEvent, setLastReadEvent, airdropEvents]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background1">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background1 mt-12">
       <NavigationMenu navigationLinks={navigationLinks} router={router} />
       <h1 className="text-5xl font-bold tracking-tight text-text1">
         Welcome, Airdrop Creators
