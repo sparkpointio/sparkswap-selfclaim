@@ -13,8 +13,19 @@ interface NavigationMenuProps {
 }
 
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({ navigationLinks, router }) => (
-  <nav className="fixed top-0 left-0 right-0 bg-background-1 shadow z-10">
+  <nav className="fixed top-0 left-0 right-0 bg-background-1 shadow-md z-10">
+  <div className="flex justify-between items-center px-12 py-2">
+  {/* <nav className="fixed top-0 left-0 right-0 bg-background-1 shadow z-10"> */}
     <ul className="flex space-x-6">
+    <Link href="/" passHref>
+          {/* <a className="flex items-center"> */}
+            <img
+              src="/SparkSwapLogoWithWord.png"
+              alt="SparkSwap Logo"
+              className="h-8 w-auto"
+            />
+          {/* </a> */}
+        </Link>
       {navigationLinks.map((link, index) => (
         <li key={link.href}>
           <Link href={link.href} passHref>
@@ -30,5 +41,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ navigationLinks,
         </li>
       ))}
     </ul>
+    </div>
   </nav>
 );

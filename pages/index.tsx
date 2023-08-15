@@ -8,13 +8,21 @@ const inter = Inter({ subsets: ["latin"] });
 export const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/claim", label: "Claim" },
-  { href: "/register", label: "Register" },
+  { href: "/create", label: "Create" },
 ];
 
 export default function Home() {
   const router = useRouter();
 
   return (
+    <div 
+    style={{
+      backgroundImage: `url('/hero-bg.png')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    }}>
+
+    
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-12 ${inter.className}`}
     >
@@ -72,7 +80,7 @@ export default function Home() {
             </div>
           </Link>
 
-          <Link href="/register">
+          <Link href="/create">
             <div
               className={`p-6 bg-background2 rounded-lg shadow-lg hover:bg-background3 cursor-pointer transition duration-300`}
             >
@@ -87,5 +95,6 @@ export default function Home() {
         </div>
       </div>
     </main>
+    </div>
   );
 }

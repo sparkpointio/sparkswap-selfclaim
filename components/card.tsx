@@ -166,7 +166,7 @@ const Card: React.FC<{
           type: "uint256",
         },
       ],
-      name: "register",
+      name: "create",
       outputs: [
         {
           internalType: "uint256",
@@ -193,7 +193,7 @@ const Card: React.FC<{
           type: "address",
         },
       ],
-      name: "Register",
+      name: "Create",
       type: "event",
     },
     {

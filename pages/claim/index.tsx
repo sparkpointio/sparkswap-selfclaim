@@ -11,7 +11,7 @@ import { NavigationMenu } from "../../components/NavigationMenu";
 import { navigationLinks } from "../index";
 import { useRouter } from "next/router";
 import { fetchProofs } from "../../hooks/claimAirdrop";
-import { expressAmountFrom18Decimals } from "../../hooks/registerAirdrop";
+import { expressAmountFrom18Decimals } from "../../hooks/createAirdrop";
 
 function hexToString(hex: string) {
   return parseInt(hex, 16).toString();

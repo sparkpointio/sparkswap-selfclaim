@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        quatro: ['Quatro', 'sans'], 
+      },
       colors: {
         navbar: '#080D14',
         accent1: '#39BEEC',

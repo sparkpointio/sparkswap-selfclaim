@@ -15,7 +15,7 @@ import {
   expressAmountFrom18Decimals,
   processInput,
   accessAPI,
-} from "../../hooks/registerAirdrop";
+} from "../../hooks/createAirdrop";
 import { NavigationMenu } from "../../components/NavigationMenu";
 import { navigationLinks } from "../index";
 import { useRouter } from "next/router";
@@ -174,7 +174,7 @@ export default function Home() {
           type: "uint256",
         },
       ],
-      name: "register",
+      name: "create",
       outputs: [
         {
           internalType: "uint256",
@@ -201,7 +201,7 @@ export default function Home() {
           type: "address",
         },
       ],
-      name: "Register",
+      name: "Create",
       type: "event",
     },
     {
@@ -850,11 +850,11 @@ export default function Home() {
     }
   }, [lastReadApprovalEvent, setLastReadApprovalEvent, tokenEvents]);
 
-  // Event listeners for Register events
+  // Event listeners for Create events
   const [lastReadEvent, setLastReadEvent] = useState(0);
   const airdropEvents = useContractEvents(
     airdropContract.contract,
-    "Register",
+    "Create",
     {
       queryFilter: {
         filters: {
@@ -871,7 +871,7 @@ export default function Home() {
       if (airdropEvents.data && airdropEvents.data.length > lastReadEvent) {
         setLastReadEvent(airdropEvents.data.length);
         alert(
-          `Self-claim airdrop registered, ID #${airdropEvents.data[0].data.id.toString()}`
+          `Self-claim airdrop created, ID #${airdropEvents.data[0].data.id.toString()}`
         );
       }
     } catch (e) {
@@ -962,19 +962,19 @@ export default function Home() {
                 tokenContractRead.data.toString()
               );
 
-              await contract.call("register", [
+              await contract.call("create", [
                 merkleOutput.merkleRoot,
                 tokenAddress,
                 expressAmount.toString(),
               ]);
             }}
-            onSuccess={(result) => alert("Register airdrop submitted")}
+            onSuccess={(result) => alert("Created airdrop submitted")}
             onError={(error) =>
-              alert("Something went wrong (Registering selfclaim)!")
+              alert("Something went wrong (Creating selfclaim)!")
             }
             className="bg-accent1 hover:bg-accent2"
           >
-            Register airdrop
+            Create airdrop
           </Web3Button>
         </div>
       </div>
