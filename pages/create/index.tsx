@@ -875,6 +875,20 @@ export default function Home() {
     }
   }, [lastReadEvent, setLastReadEvent, airdropEvents]);
 
+  const [dueDate, setDueDate] = useState(""); // temp date component state
+  const handleDueDateChange = (e) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(e.target.value);
+    const maxAllowedDate = new Date();
+    maxAllowedDate.setMonth(maxAllowedDate.getMonth() + 1);
+
+    if (selectedDate != maxAllowedDate) {
+      setDueDate(maxAllowedDate.toISOString().split("T")[0]);
+    } else {
+      setDueDate(e.target.value);
+    }
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
       <NavigationMenu navigationLinks={navigationLinks} router={router} />
@@ -921,6 +935,25 @@ export default function Home() {
             onChange={(e) => setAddress(e.target.value)}
           ></textarea>
         </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="dueDate"
+            className="block mb-2 font-medium text-text1"
+          >
+            Claim Due Date
+          </label>
+          <input
+            type="date"
+            id="dueDate"
+            className="w-full px-3 py-2 border border-accent2 rounded-md text-text2 bg-background2"
+            value={dueDate}
+            onChange={handleDueDateChange}
+            min={new Date().toISOString().split("T")[0]}
+            max={new Date().toISOString().split("T")[0]}
+          />
+        </div>
+
         <div className="mb-4 w-full">
           <Web3Button
             contractAddress={tokenAddress}
@@ -940,6 +973,7 @@ export default function Home() {
             Approve selfclaim
           </Web3Button>
         </div>
+
         <div className="mb-4 w-full">
           <Web3Button
             contractAddress={contractAddress}
