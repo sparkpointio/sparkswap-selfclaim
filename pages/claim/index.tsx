@@ -22,9 +22,14 @@ export default function ClaimPage() {
   const proofs = fetchProofs();
   const router = useRouter();
 
+  const navigationMenuProps = {
+    navigationLinks,
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3">
-      <NavigationMenu navigationLinks={navigationLinks} router={router} />
+      {/* <NavigationMenu navigationLinks={navigationLinks} router={router} /> */}
+      <NavigationMenu navigationLinks={navigationLinks} />
 
       <h1 className="text-5xl font-bold tracking-tight text-text1 mt-28">
         Welcome, claimants
