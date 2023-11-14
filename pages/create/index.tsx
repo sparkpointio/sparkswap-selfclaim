@@ -875,9 +875,14 @@ export default function Home() {
     }
   }, [lastReadEvent, setLastReadEvent, airdropEvents]);
 
+  const navigationMenuProps = {
+    navigationLinks,
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
-      <NavigationMenu navigationLinks={navigationLinks} router={router} />
+      {/* <NavigationMenu navigationLinks={navigationLinks} router={router} /> */}
+      <NavigationMenu {...navigationMenuProps} />
       <h1 className="text-5xl font-bold tracking-tight text-text1">
         Welcome, Airdrop Creators
       </h1>
