@@ -7,10 +7,18 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        quatro: ['Quatro', 'sans'], 
+      },
+      colors: {
+        navbar: '#080D14',
+        accent1: '#39BEEC',
+        accent2: '#0071BC',
+        text1: '#FFFFFF',
+        text2: '#9FA0A1',
+        background1: '#161C26',
+        background2: '#15151A',
+        background3: '#030A14',
       },
     },
   },

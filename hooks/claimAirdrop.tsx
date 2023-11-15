@@ -144,7 +144,7 @@ const contractABI = [
         "type": "uint256"
       }
     ],
-    "name": "register",
+    "name": "create",
     "outputs": [
       {
         "internalType": "uint256",
@@ -171,7 +171,7 @@ const contractABI = [
         "type": "address"
       }
     ],
-    "name": "Register",
+    "name": "Create",
     "type": "event"
   },
   {
