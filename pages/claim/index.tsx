@@ -7,9 +7,7 @@ import {
   useAddress,
   useContractRead,
 } from "@thirdweb-dev/react";
-import { NavigationMenu } from "../../components/NavigationMenu";
-import { navigationLinks } from "../index";
-import { useRouter } from "next/router";
+import Layout from "@/components/layout/Layout";
 import { fetchProofs } from "../../hooks/claimAirdrop";
 import { expressAmountFrom18Decimals } from "../../hooks/createAirdrop";
 
@@ -20,12 +18,9 @@ function hexToString(hex: string) {
 export default function ClaimPage() {
   const wallet = useAddress();
   const proofs = fetchProofs();
-  const router = useRouter();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background3">
-      <NavigationMenu navigationLinks={navigationLinks} router={router} />
-
+    <Layout>
       <h1 className="text-5xl font-bold tracking-tight text-text1 mt-28">
         Welcome, claimants
       </h1>
@@ -95,6 +90,6 @@ export default function ClaimPage() {
           </>
         )}
       </div>
-    </main>
+    </Layout>
   );
 }
