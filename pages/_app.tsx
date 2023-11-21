@@ -1,6 +1,7 @@
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
+import { inter, orbitron } from "@/utils/fonts";
 
 // This is the chain your dApp will work on.
 // Change this to the chain your app is built for.
@@ -9,8 +10,13 @@ const activeChain = "binance-testnet";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider activeChain={activeChain} clientId={process.env.THIRDWEB_ID}>
-      <Component {...pageProps} />
+    <ThirdwebProvider
+      activeChain={activeChain}
+      clientId={process.env.NEXT_PUBLIC_THIRDWEB_ID}
+    >
+      <div className={`${orbitron.variable} ${inter.variable}`}>
+        <Component {...pageProps} />
+      </div>
     </ThirdwebProvider>
   );
 }

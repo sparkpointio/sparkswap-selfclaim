@@ -1,9 +1,6 @@
 import Link from "next/link";
-import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useRouter } from "next/router";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const navigationLinks = [
   { href: "/", label: "Home" },
@@ -57,15 +54,11 @@ export default function Home() {
       </nav>
 
       <main
-        className={`flex min-h-screen flex-col items-center justify-center p-6 ${inter.className}`}
+        className={`flex min-h-screen flex-col items-center justify-center p-6 font-inter`}
       >
         <Head>
           <title>Self-Claim Airdrop | SparkSwap</title>
           <link rel="icon" href="/SparkSwapLogo.png" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
-          />
         </Head>
 
         <div className="text-center bg-background1 rounded-lg p-8 shadow-md">
