@@ -2,12 +2,6 @@ import Image from "next/image";
 import Navbar from "./navbar/Navbar";
 import heroBg from "@/assets/images/hero-bg.png";
 
-export const navigationLinks = [
-  { href: "/", label: "Home" },
-  { href: "/claim", label: "Claim" },
-  { href: "/create", label: "Create" },
-];
-
 export default function Layout({ children }) {
   return (
     <div className="w-full h-[100vh] relative">
