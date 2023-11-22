@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { NavigationMenu } from "@/components/NavigationMenu";
+import Navbar from "./navbar/Navbar";
 import heroBg from "@/assets/images/hero-bg.png";
 
 export const navigationLinks = [
@@ -21,7 +21,7 @@ export default function Layout({ children }) {
         />
       </div>
       <header>
-        <NavigationMenu navigationLinks={navigationLinks} />
+        <Navbar />
       </header>
       <main
         className={`flex min-h-screen flex-col items-center justify-center font-inter`}
