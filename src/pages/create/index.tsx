@@ -10,15 +10,11 @@ import {
   useContract,
   useAddress,
 } from "@thirdweb-dev/react";
-import {
-  expressAmountWith18Decimals,
-  expressAmountFrom18Decimals,
-  processInput,
-  accessAPI,
-} from "@/src/library/hooks/createAirdrop";
 import { NavigationMenu } from "@/src/resources/components/NavigationMenu";
 import { navigationLinks } from "../index";
-import { useRouter } from "next/router";
+import {expressAmountFrom18Decimals, expressAmountWith18Decimals} from "@/src/library/utils/bignumber.utils";
+import {formatRecipientsForMerkle} from "@/src/library/utils/merkle.utils";
+import {uploadMerkle} from "@/src/library/hooks/useMerkle";
 
 interface AddressAmount {
   address: string;
@@ -944,13 +940,13 @@ export default function Home() {
             contractAddress={contractAddress}
             contractAbi={contractABI}
             action={async (contract) => {
-              const [result, totalAmount] = processInput(address);
+              const [result, totalAmount] = formatRecipientsForMerkle(address);
               const merkleinput = {
                 recipient: result,
                 tokenDecimal: tokenContractRead.data.toString(),
               };
 
-              const merkleOutput = await accessAPI(merkleinput);
+              const merkleOutput = await uploadMerkle(merkleinput);
 
               const expressAmount = expressAmountWith18Decimals(
                 totalAmount.toString(),

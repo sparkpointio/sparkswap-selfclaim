@@ -10,8 +10,9 @@ import {
 import { NavigationMenu } from "@/src/resources/components/NavigationMenu";
 import { navigationLinks } from "../index";
 import { useRouter } from "next/router";
-import { fetchProofs } from "@/src/library/hooks/claimAirdrop";
-import { expressAmountFrom18Decimals } from "@/src/library/hooks/createAirdrop";
+import { useFetchProofs } from "@/src/library/hooks/useMerkle";
+
+import {expressAmountFrom18Decimals} from "@/src/library/utils/bignumber.utils";
 
 function hexToString(hex: string) {
   return parseInt(hex, 16).toString();
@@ -19,7 +20,7 @@ function hexToString(hex: string) {
 
 export default function ClaimPage() {
   const wallet = useAddress();
-  const proofs = fetchProofs();
+  const proofs = useFetchProofs();
   const router = useRouter();
 
   return (
