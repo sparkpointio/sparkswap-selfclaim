@@ -28,13 +28,12 @@ interface AddressAmount {
 export default function Home() {
   // User's connected wallet address
   const wallet = useAddress();
-  const router = useRouter();
 
   // Self-claim airdrop contract address and ABI
   const contractAddress = process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS
     ? process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS
     : "";
-  const contractABI = [
+    const contractABI = [
     {
       inputs: [],
       stateMutability: "nonpayable",
@@ -877,7 +876,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
-      <NavigationMenu navigationLinks={navigationLinks} router={router} />
+      <NavigationMenu navigationLinks={navigationLinks} />
       <h1 className="text-5xl font-bold tracking-tight text-text1">
         Welcome, Airdrop Creators
       </h1>
