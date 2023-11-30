@@ -15,8 +15,8 @@ import {
   expressAmountFrom18Decimals,
   processInput,
   accessAPI,
-} from "../../hooks/createAirdrop";
-import { NavigationMenu } from "../../components/NavigationMenu";
+} from "@/src/library/hooks/createAirdrop";
+import { NavigationMenu } from "@/src/resources/components/NavigationMenu";
 import { navigationLinks } from "../index";
 import { useRouter } from "next/router";
 

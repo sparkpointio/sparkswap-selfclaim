@@ -1,17 +1,17 @@
 "use client";
 
 import React from "react";
-import Card from "../../components/card";
+import Card from "@/src/resources/components/card";
 import {
   ConnectWallet,
   useAddress,
   useContractRead,
 } from "@thirdweb-dev/react";
-import { NavigationMenu } from "../../components/NavigationMenu";
+import { NavigationMenu } from "@/src/resources/components/NavigationMenu";
 import { navigationLinks } from "../index";
 import { useRouter } from "next/router";
-import { fetchProofs } from "../../hooks/claimAirdrop";
-import { expressAmountFrom18Decimals } from "../../hooks/createAirdrop";
+import { fetchProofs } from "@/src/library/hooks/claimAirdrop";
+import { expressAmountFrom18Decimals } from "@/src/library/hooks/createAirdrop";
 
 function hexToString(hex: string) {
   return parseInt(hex, 16).toString();
