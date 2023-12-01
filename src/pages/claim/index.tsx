@@ -2,15 +2,10 @@
 
 import React from "react";
 import Card from "@/src/resources/components/card";
-import {
-  ConnectWallet,
-  useAddress,
-  useContractRead,
-} from "@thirdweb-dev/react";
-import { NavigationMenu } from "@/src/resources/components/NavigationMenu";
-import { navigationLinks } from "../index";
-import { useRouter } from "next/router";
-import { useFetchProofs } from "@/src/library/hooks/useMerkle";
+import {ConnectWallet, useAddress,} from "@thirdweb-dev/react";
+import {NavigationMenu} from "@/src/resources/components/NavigationMenu";
+import {navigationLinks} from "../index";
+import {useFetchProofs} from "@/src/library/hooks/useMerkle";
 
 import {expressAmountFrom18Decimals} from "@/src/library/utils/bignumber.utils";
 
@@ -21,11 +16,10 @@ function hexToString(hex: string) {
 export default function ClaimPage() {
   const wallet = useAddress();
   const proofs = useFetchProofs();
-  const router = useRouter();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3">
-      <NavigationMenu navigationLinks={navigationLinks} />
+      <NavigationMenu navigationLinks={navigationLinks}/>
 
       <h1 className="text-5xl font-bold tracking-tight text-text1 mt-28">
         Welcome, claimants
