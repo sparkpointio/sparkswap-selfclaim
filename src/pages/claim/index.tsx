@@ -1,17 +1,17 @@
 "use client";
 
 import React from "react";
-import Card from "../../components/card";
+import Card from "@/src/resources/components/card";
 import {
   ConnectWallet,
   useAddress,
   useContractRead,
 } from "@thirdweb-dev/react";
-import { NavigationMenu } from "../../components/NavigationMenu";
+import { NavigationMenu } from "@/src/resources/components/NavigationMenu";
 import { navigationLinks } from "../index";
 import { useRouter } from "next/router";
-import { fetchProofs } from "../../hooks/claimAirdrop";
-import { expressAmountFrom18Decimals } from "../../hooks/createAirdrop";
+import { fetchProofs } from "@/src/library/hooks/claimAirdrop";
+import { expressAmountFrom18Decimals } from "@/src/library/hooks/createAirdrop";
 
 function hexToString(hex: string) {
   return parseInt(hex, 16).toString();
@@ -24,7 +24,7 @@ export default function ClaimPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3">
-      <NavigationMenu navigationLinks={navigationLinks} router={router} />
+      <NavigationMenu navigationLinks={navigationLinks} />
 
       <h1 className="text-5xl font-bold tracking-tight text-text1 mt-28">
         Welcome, claimants
