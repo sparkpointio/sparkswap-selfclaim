@@ -11,11 +11,12 @@ import {
 } from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/src/resources/components/NavigationMenu";
 import {navigationLinks} from "../index";
-import {expressAmountFrom18Decimals, expressAmountWith18Decimals} from "@/src/library/utils/bignumber.utils";
+import {denormalizeAmount, normalizeAmount} from "@/src/library/utils/bignumber.utils";
 import {formatRecipientsForMerkle} from "@/src/library/utils/merkle.utils";
 import {uploadMerkle} from "@/src/library/hooks/useMerkle";
-import selfclaim from "@/src/library/constants/contracts/selfclaim.constants";
+import selfclaim, {defaultRewardTokenAddress} from "@/src/library/constants/contracts/selfclaim.constants";
 import {erc20ABI} from "@/src/library/constants/contracts/token.constants";
+import {useTokenAllowance, useApproveToken, useTokenContract} from "@/src/library/hooks/useToken";
 
 interface AddressAmount {
   address: string;
@@ -27,74 +28,46 @@ export default function Home() {
   const wallet = useAddress();
 
   // Form default values and value holders
-  const [tokenAddress, setTokenAddress] = useState(
-    "0xe09B8661D80CF24dB230A167969d18B94a5a3266"
+  const [rewardTokenAddress, setRewardTokenAddress] = useState(
+    defaultRewardTokenAddress
   );
-  const [address, setAddress] = useState(
+  const [recipients, setRecipients] = useState(
     "0x373233a38ae21cf0c4f9de11570e7d5aa6824a1e, 145 \n0x8A672715e042f6e9d9B25C2ce9F84210e8206EF1, 1.069 \n0xC4515C02c334155bc60d86BD6F1119f58ea136e2, 10.81 \n0xe270bc73d658cbd72f721cb8c649aebf91b98d2b, 0.058"
   );
-
   // Use contract for selfclaim airdrop contract
   const airdropContract = useContract(selfclaim.address);
 
   // Use contract for ERC20 contract
-  const tokenContract = useContract(tokenAddress);
-
-  // Contract Reader for token decimals
-  const tokenContractRead = useContractRead(tokenContract.contract, "decimals");
+  const rewardToken= useTokenContract(rewardTokenAddress);
 
   // Event listeners for Token approval events
-  const [lastReadApprovalEvent, setLastReadApprovalEvent] = useState(0);
-  const tokenEvents = useContractEvents(tokenContract.contract, "Approval", {
-    queryFilter: {
-      filters: {
-        owner: wallet,
-        spender: selfclaim.address,
-      },
-      order: "desc", // Order of events ("asc" or "desc")
-    },
-    subscribe: true, // Subscribe to new events
-  });
-
-  useEffect(() => {
-    if (tokenEvents.data && tokenEvents.data.length > lastReadApprovalEvent) {
-      try {
-        setLastReadApprovalEvent(tokenEvents.data.length);
-        const approved = expressAmountFrom18Decimals(
-          tokenEvents.data[0].data.value.toString(),
-          tokenContractRead.data.toString()
-        );
-        alert(`Token approved with allowance ${approved}`);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-  }, [lastReadApprovalEvent, setLastReadApprovalEvent, tokenContractRead.data, tokenEvents]);
+  const { approve } = useApproveToken()
+  const { allowance } = useTokenAllowance(rewardToken.contract, selfclaim.address)
 
   // Event listeners for Create events
-  const [lastReadEvent, setLastReadEvent] = useState(0);
-  const airdropEvents = useContractEvents(airdropContract.contract, "Create", {
-    queryFilter: {
-      filters: {
-        projectOwner: wallet, // e.g. Only events where tokenId = 123
-      },
-      order: "desc", // Order of events ("asc" or "desc")
-    },
-    subscribe: true, // Subscribe to new events
-  });
-
-  useEffect(() => {
-    try {
-      if (airdropEvents.data && airdropEvents.data.length > lastReadEvent) {
-        setLastReadEvent(airdropEvents.data.length);
-        alert(
-          `Self-claim airdrop created, ID #${airdropEvents.data[0].data.id.toString()}`
-        );
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }, [lastReadEvent, setLastReadEvent, airdropEvents]);
+  // const [lastReadEvent, setLastReadEvent] = useState(0);
+  // const airdropEvents = useContractEvents(airdropContract.contract, "Create", {
+  //   queryFilter: {
+  //     filters: {
+  //       projectOwner: wallet, // e.g. Only events where tokenId = 123
+  //     },
+  //     order: "desc", // Order of events ("asc" or "desc")
+  //   },
+  //   subscribe: true, // Subscribe to new events
+  // });
+  //
+  // useEffect(() => {
+  //   try {
+  //     if (airdropEvents.data && airdropEvents.data.length > lastReadEvent) {
+  //       setLastReadEvent(airdropEvents.data.length);
+  //       alert(
+  //         `Self-claim airdrop created, ID #${airdropEvents.data[0].data.id.toString()}`
+  //       );
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }, [lastReadEvent, setLastReadEvent, airdropEvents]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
@@ -119,10 +92,10 @@ export default function Home() {
           </label>
           <input
             type="text"
-            id="tokenAddress"
+            id="rewardTokenAddress"
             className="w-full px-3 py-2 border border-accent2 rounded-md text-text2 bg-background2"
-            value={tokenAddress}
-            onChange={(e) => setTokenAddress(e.target.value)}
+            value={rewardTokenAddress}
+            onChange={(e) => setRewardTokenAddress(e.target.value)}
             placeholder="Enter token address..."
           />
         </div>
@@ -138,21 +111,27 @@ export default function Home() {
             id="message"
             className="w-full px-3 py-2 border border-accent2 rounded-md text-text2 bg-background2"
             rows={4}
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            value={recipients}
+            onChange={(e) => setRecipients(e.target.value)}
           ></textarea>
         </div>
         <div className="mb-4 w-full">
+          <p>
+            Current Allowance: {allowance?.displayValue} {allowance?.symbol}
+          </p>
           <Web3Button
-            contractAddress={tokenAddress}
+            connectWallet={{
+              btnTitle: "Approve selfclaim",
+              modalTitle: 'Please connect your wallet first'
+            }}
+            contractAddress={rewardTokenAddress}
             contractAbi={erc20ABI}
             action={async (contract) => {
-              await contract.call("approve", [
-                selfclaim.address,
-                "1000000000000000000",
-              ]);
+              await approve(contract, selfclaim.address, '1000');
             }}
-            onSuccess={(result) => alert("Token approval submitted")}
+            onSuccess={(result) => {
+              alert('tokens approved')
+            }}
             onError={(error) =>
               alert("Something went wrong (Approving tokens)!")
             }
@@ -163,25 +142,29 @@ export default function Home() {
         </div>
         <div className="mb-4 w-full">
           <Web3Button
+            connectWallet={{
+              btnTitle: "Create Airdrop",
+              modalTitle: 'Please connect your wallet first'
+            }}
             contractAddress={selfclaim.address}
             contractAbi={selfclaim.ABI}
             action={async (contract) => {
-              const [result, totalAmount] = formatRecipientsForMerkle(address);
+              const [result, totalAmount] = formatRecipientsForMerkle(recipients);
               const merkleinput = {
                 recipient: result,
-                tokenDecimal: tokenContractRead.data.toString(),
+                tokenDecimal: rewardToken.details.decimals.toString(),
               };
 
               const merkleOutput = await uploadMerkle(merkleinput);
 
-              const expressAmount = expressAmountWith18Decimals(
+              const expressAmount = normalizeAmount(
                 totalAmount.toString(),
-                tokenContractRead.data.toString()
+                rewardToken.details.decimals.toString()
               );
 
               await contract.call("create", [
                 merkleOutput.merkleRoot,
-                tokenAddress,
+                rewardTokenAddress,
                 expressAmount.toString(),
               ]);
             }}
