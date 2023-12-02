@@ -14,8 +14,8 @@ import {navigationLinks} from "../index";
 import {denormalizeAmount, normalizeAmount} from "@/src/library/utils/bignumber.utils";
 import {formatRecipientsForMerkle} from "@/src/library/utils/merkle.utils";
 import {uploadMerkle} from "@/src/library/hooks/useMerkle";
-import selfclaim, {defaultRewardTokenAddress} from "@/src/library/constants/contracts/selfclaim.constants";
-import {erc20ABI} from "@/src/library/constants/contracts/token.constants";
+import selfclaim, {defaultRewardTokenAddress} from "@/src/library/constants/selfclaim";
+import {erc20ABI} from "@/src/library/constants/tokens";
 import {useTokenAllowance, useApproveToken, useTokenContract} from "@/src/library/hooks/useToken";
 
 interface AddressAmount {

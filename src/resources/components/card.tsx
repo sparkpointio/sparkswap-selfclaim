@@ -7,7 +7,7 @@ import {
   useContract,
   useAddress,
 } from "@thirdweb-dev/react";
-import selfclaim from "@/src/library/constants/contracts/selfclaim.constants";
+import selfclaim from "@/src/library/constants/selfclaim";
 
 /**
  * Render a card component with a message, button text, and button click handler.
