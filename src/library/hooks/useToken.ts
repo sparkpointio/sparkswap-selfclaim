@@ -1,20 +1,13 @@
-import {
-  Address,
-  SmartContract,
-  useAddress,
-  useConnectionStatus,
-  useContract,
-  useWalletConfig
-} from '@thirdweb-dev/react';
+import {Address, Currency, SmartContract, useAddress, useContract} from '@thirdweb-dev/react';
 import {useCallback, useEffect, useState} from "react";
 import {BaseContract, BigNumberish} from "ethers";
 import {TransactionReceipt} from "@ethersproject/abstract-provider";
 
 
 export function useTokenContract(address: Address) {
-  const [details, setDetails] = useState<any>(null)
+  const [details, setDetails] = useState<Currency>()
   const [error, setError] = useState<any>(null)
-  const {contract} = useContract(address);
+  const {contract, error: contractErr} = useContract(address);
 
   useEffect(() => {
     async function fetchData() {
@@ -22,12 +15,16 @@ export function useTokenContract(address: Address) {
       setDetails(details);
     }
 
-    fetchData().catch(setError);
-  }, [contract?.erc20]);
+    if (!contractErr) {
+      fetchData().catch(setError);
+    } else {
+      setError('Contract does not exist')
+    }
+  }, [contract, contractErr]);
 
   return {
     contract,
-    details,
+    ...details,
     balanceOf: contract?.erc20.balanceOf,
     error
   };
