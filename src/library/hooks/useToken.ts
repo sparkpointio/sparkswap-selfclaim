@@ -73,7 +73,6 @@ export function useTokenAllowance(
 
   const checkAllowance = useCallback(async (): Promise<any> => {
     try {
-      console.log('asd')
       if (tokenContract && owner) {
         const result = await tokenContract?.erc20.allowanceOf(owner, spender)
         setAllowance(result)

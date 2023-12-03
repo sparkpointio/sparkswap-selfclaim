@@ -1,27 +1,13 @@
-"use client";
-
-import React, {useEffect, useState} from "react";
-import {
-  ConnectWallet,
-  useAddress,
-  useContract,
-  useContractEvents,
-  useContractRead,
-  Web3Button,
-} from "@thirdweb-dev/react";
+import React, {useState} from "react";
+import {ConnectWallet, useAddress, Web3Button,} from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/src/resources/components/NavigationMenu";
 import {navigationLinks} from "../index";
-import {denormalizeAmount, normalizeAmount} from "@/src/library/utils/bignumber.utils";
 import {formatRecipientsForMerkle} from "@/src/library/utils/merkle.utils";
 import {uploadMerkle} from "@/src/library/hooks/useMerkle";
-import selfclaim, {defaultRewardTokenAddress} from "@/src/library/constants/selfclaim";
-import {erc20ABI} from "@/src/library/constants/tokens";
-import {useTokenAllowance, useApproveToken, useTokenContract} from "@/src/library/hooks/useToken";
-
-interface AddressAmount {
-  address: string;
-  amount: string;
-}
+import {useApproveToken, useTokenAllowance, useTokenContract} from "@/src/library/hooks/useToken";
+import tokens from "@/src/library/constants/tokens";
+import contracts from "@/src/library/constants/contracts";
+import {normalizeAmount} from "@/src/library/utils/bignumber.utils";
 
 export default function Home() {
   // User's connected wallet address
@@ -29,20 +15,20 @@ export default function Home() {
 
   // Form default values and value holders
   const [rewardTokenAddress, setRewardTokenAddress] = useState(
-    defaultRewardTokenAddress
+    tokens.srk.address.default
   );
   const [recipients, setRecipients] = useState(
     "0x373233a38ae21cf0c4f9de11570e7d5aa6824a1e, 145 \n0x8A672715e042f6e9d9B25C2ce9F84210e8206EF1, 1.069 \n0xC4515C02c334155bc60d86BD6F1119f58ea136e2, 10.81 \n0xe270bc73d658cbd72f721cb8c649aebf91b98d2b, 0.058"
   );
   // Use contract for selfclaim airdrop contract
-  const airdropContract = useContract(selfclaim.address);
+  // const airdropContract = useContract(selfclaim.address);
 
   // Use contract for ERC20 contract
-  const rewardToken= useTokenContract(rewardTokenAddress);
+  const rewardToken = useTokenContract(rewardTokenAddress);
 
   // Event listeners for Token approval events
-  const { approve } = useApproveToken()
-  const { allowance } = useTokenAllowance(rewardToken.contract, selfclaim.address)
+  const {approve} = useApproveToken()
+  const {allowance} = useTokenAllowance(rewardToken.contract, contracts.selfClaim.address.default)
 
   // Event listeners for Create events
   // const [lastReadEvent, setLastReadEvent] = useState(0);
@@ -125,9 +111,9 @@ export default function Home() {
               modalTitle: 'Please connect your wallet first'
             }}
             contractAddress={rewardTokenAddress}
-            contractAbi={erc20ABI}
+            contractAbi={tokens.erc20ABI}
             action={async (contract) => {
-              await approve(contract, selfclaim.address, '1000');
+              await approve(contract, contracts.selfClaim.address.default, '1000');
             }}
             onSuccess={(result) => {
               alert('tokens approved')
@@ -146,20 +132,20 @@ export default function Home() {
               btnTitle: "Create Airdrop",
               modalTitle: 'Please connect your wallet first'
             }}
-            contractAddress={selfclaim.address}
-            contractAbi={selfclaim.ABI}
+            contractAddress={contracts.selfClaim.address.default}
+            contractAbi={contracts.selfClaim.ABI}
             action={async (contract) => {
               const [result, totalAmount] = formatRecipientsForMerkle(recipients);
               const merkleinput = {
                 recipient: result,
-                tokenDecimal: rewardToken.details.decimals.toString(),
+                tokenDecimal: rewardToken.decimals?.toString(),
               };
 
               const merkleOutput = await uploadMerkle(merkleinput);
 
               const expressAmount = normalizeAmount(
                 totalAmount.toString(),
-                rewardToken.details.decimals.toString()
+                rewardToken.decimals?.toString()
               );
 
               await contract.call("create", [
