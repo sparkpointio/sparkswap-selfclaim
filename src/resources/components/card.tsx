@@ -7,7 +7,7 @@ import {
   useContract,
   useAddress,
 } from "@thirdweb-dev/react";
-import contracts from "@/src/library/constants/contracts";
+import contracts from "@/library/constants/contracts";
 
 /**
  * Render a card component with a message, button text, and button click handler.

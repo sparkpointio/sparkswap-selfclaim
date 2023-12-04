@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import Card from "@/src/resources/components/card";
+import Card from "@/resources/components/card";
 import {ConnectWallet, useAddress,} from "@thirdweb-dev/react";
-import {NavigationMenu} from "@/src/resources/components/NavigationMenu";
+import {NavigationMenu} from "@/resources/components/NavigationMenu";
 import {navigationLinks} from "../index";
-import {useFetchProofs} from "@/src/library/hooks/useMerkle";
+import {useFetchProofs} from "@/library/hooks/useMerkle";
 
-import {denormalizeAmt} from "@/src/library/utils/bignumber.utils";
+import {denormalizeAmt} from "@/library/utils/bignumber.utils";
 
 function hexToString(hex: string) {
   return parseInt(hex, 16).toString();
@@ -36,8 +36,8 @@ export default function ClaimPage() {
       </div>
       <div className="flex flex-col max-w-screen-md w-full mx-auto mt-4">
         {proofs.length > 0 ? (
-          proofs.map((proof) =>
-            proof.airdrops.map((airdrop) => (
+          proofs.map((proof: any) =>
+            proof.airdrops.map((airdrop: any) => (
               <div
                 key={airdrop.id}
                 className="mb-4 p-6 rounded-lg shadow-lg hover:bg-background3 cursor-pointer transition duration-300"

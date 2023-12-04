@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {ConnectWallet, useAddress, Web3Button,} from "@thirdweb-dev/react";
-import {NavigationMenu} from "@/src/resources/components/NavigationMenu";
+import {NavigationMenu} from "@/resources/components/NavigationMenu";
 import {navigationLinks} from "../index";
-import {formatRecipientsForMerkle} from "@/src/library/utils/merkle.utils";
-import {uploadMerkle} from "@/src/library/hooks/useMerkle";
-import {useApproveToken, useTokenAllowance, useTokenContract} from "@/src/library/hooks/useToken";
-import tokens from "@/src/library/constants/tokens";
-import contracts from "@/src/library/constants/contracts";
-import {normalizeAmt} from "@/src/library/utils/bignumber.utils";
-import {useSelfClaimContract} from "@/src/library/hooks/useSelfClaim";
+import {formatRecipientsForMerkle} from "@/library/utils/merkle.utils";
+import {uploadMerkle} from "@/library/hooks/useMerkle";
+import {useApproveToken, useTokenAllowance, useTokenContract} from "@/library/hooks/useToken";
+import tokens from "@/library/constants/tokens";
+import contracts from "@/library/constants/contracts";
+import {normalizeAmt} from "@/library/utils/bignumber.utils";
+import {useSelfClaimContract} from "@/library/hooks/useSelfClaim";
 
 export default function Home() {
   // User's connected wallet address

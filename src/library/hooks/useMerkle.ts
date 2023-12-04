@@ -38,7 +38,7 @@ export function useFetchProofs() {
   return proofs
 }
 
-export async function uploadMerkle(merkleInput) {
+export async function uploadMerkle(merkleInput: any) {
     const url = process.env.NEXT_PUBLIC_SPARKSWAP_API
     const apiKey = process.env.NEXT_PUBLIC_SPARKSWAP_KEY
 

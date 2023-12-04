@@ -1,8 +1,8 @@
 import {Address, useContract} from "@thirdweb-dev/react";
 import {useCallback, useEffect, useState} from "react";
-import contracts from "@/src/library/constants/contracts";
-import {uploadMerkle} from "@/src/library/hooks/useMerkle";
-import {AddressAmount} from "@/src/library/utils/merkle.utils";
+import contracts from "@/library/constants/contracts";
+import {uploadMerkle} from "@/library/hooks/useMerkle";
+import {AddressAmount} from "@/library/utils/merkle.utils";
 import {BigNumberish} from "ethers";
 
 export function useSelfClaimContract(customAddress?: Address) {
