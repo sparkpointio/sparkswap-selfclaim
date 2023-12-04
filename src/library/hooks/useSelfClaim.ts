@@ -1,0 +1,92 @@
+import {Address, useContract} from "@thirdweb-dev/react";
+import {useCallback, useEffect, useState} from "react";
+import contracts from "@/src/library/constants/contracts";
+import {uploadMerkle} from "@/src/library/hooks/useMerkle";
+import {AddressAmount} from "@/src/library/utils/merkle.utils";
+import {BigNumberish} from "ethers";
+
+export function useSelfClaimContract(customAddress?: Address) {
+  const {contract, error: contractErr} = useContract(
+    customAddress ?? contracts.selfClaim.address.default,
+    contracts.selfClaim.ABI
+  );
+  const [error, setError] = useState<any>(null)
+  const [receipt, setReceipt] = useState<any>()
+  const create = useCallback(async (
+    recipientList: AddressAmount[],
+    amount: {
+      address: Address
+      value: BigNumberish;
+      decimals: number | string;
+    },
+  ) => {
+    if (!contract) return
+
+    const merkleinput = {
+      recipient: recipientList,
+      tokenDecimal: amount.decimals?.toString(),
+    };
+
+    try {
+      const merkleOutput = await uploadMerkle(merkleinput);
+      return await contract.call('create', [
+        merkleOutput.merkleRoot,
+        amount.address,
+        amount.value,
+      ])
+    } catch (e: any) {
+      throw new Error('Unable to create airdrop: ' + e.message)
+    }
+  }, [contract])
+
+  // subscribe to create events
+  useEffect(() => {
+    if (!contract) return
+
+    const handleCreateEvent = async (event: any) => {
+      setReceipt(event)
+    };
+    const unsubscribe = contract?.events.addEventListener('Create', handleCreateEvent)
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe()
+      }
+    };
+  }, [contract]);
+
+  return {
+    contract,
+    create,
+    receipt,
+    error
+  };
+}
+
+/**
+ * OLD listener events to be removed once it is implement in a more efficient way in the hook
+ */
+// Event listeners for Create events
+// const [lastReadEvent, setLastReadEvent] = useState(0);
+// const airdropEvents = useContractEvents(airdropContract.contract, "Create", {
+//   queryFilter: {
+//     filters: {
+//       projectOwner: wallet, // e.g. Only events where tokenId = 123
+//     },
+//     order: "desc", // Order of events ("asc" or "desc")
+//   },
+//   subscribe: true, // Subscribe to new events
+// });
+//
+// useEffect(() => {
+//   try {
+//     if (airdropEvents.data && airdropEvents.data.length > lastReadEvent) {
+//       setLastReadEvent(airdropEvents.data.length);
+//       alert(
+//         `Self-claim airdrop created, ID #${airdropEvents.data[0].data.id.toString()}`
+//       );
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }, [lastReadEvent, setLastReadEvent, airdropEvents]);

@@ -7,7 +7,8 @@ import {uploadMerkle} from "@/src/library/hooks/useMerkle";
 import {useApproveToken, useTokenAllowance, useTokenContract} from "@/src/library/hooks/useToken";
 import tokens from "@/src/library/constants/tokens";
 import contracts from "@/src/library/constants/contracts";
-import {normalizeAmount} from "@/src/library/utils/bignumber.utils";
+import {normalizeAmt} from "@/src/library/utils/bignumber.utils";
+import {useSelfClaimContract} from "@/src/library/hooks/useSelfClaim";
 
 export default function Home() {
   // User's connected wallet address
@@ -21,7 +22,7 @@ export default function Home() {
     "0x373233a38ae21cf0c4f9de11570e7d5aa6824a1e, 145 \n0x8A672715e042f6e9d9B25C2ce9F84210e8206EF1, 1.069 \n0xC4515C02c334155bc60d86BD6F1119f58ea136e2, 10.81 \n0xe270bc73d658cbd72f721cb8c649aebf91b98d2b, 0.058"
   );
   // Use contract for selfclaim airdrop contract
-  // const airdropContract = useContract(selfclaim.address);
+  const {create: createSelfClaim} = useSelfClaimContract(contracts.selfClaim.address.default);
 
   // Use contract for ERC20 contract
   const rewardToken = useTokenContract(rewardTokenAddress);
@@ -30,30 +31,6 @@ export default function Home() {
   const {approve} = useApproveToken()
   const {allowance} = useTokenAllowance(rewardToken.contract, contracts.selfClaim.address.default)
 
-  // Event listeners for Create events
-  // const [lastReadEvent, setLastReadEvent] = useState(0);
-  // const airdropEvents = useContractEvents(airdropContract.contract, "Create", {
-  //   queryFilter: {
-  //     filters: {
-  //       projectOwner: wallet, // e.g. Only events where tokenId = 123
-  //     },
-  //     order: "desc", // Order of events ("asc" or "desc")
-  //   },
-  //   subscribe: true, // Subscribe to new events
-  // });
-  //
-  // useEffect(() => {
-  //   try {
-  //     if (airdropEvents.data && airdropEvents.data.length > lastReadEvent) {
-  //       setLastReadEvent(airdropEvents.data.length);
-  //       alert(
-  //         `Self-claim airdrop created, ID #${airdropEvents.data[0].data.id.toString()}`
-  //       );
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }, [lastReadEvent, setLastReadEvent, airdropEvents]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
@@ -135,29 +112,26 @@ export default function Home() {
             contractAddress={contracts.selfClaim.address.default}
             contractAbi={contracts.selfClaim.ABI}
             action={async (contract) => {
-              const [result, totalAmount] = formatRecipientsForMerkle(recipients);
-              const merkleinput = {
-                recipient: result,
-                tokenDecimal: rewardToken.decimals?.toString(),
-              };
+              const [recipientList, totalAmount] = formatRecipientsForMerkle(recipients);
 
-              const merkleOutput = await uploadMerkle(merkleinput);
-
-              const expressAmount = normalizeAmount(
+              const expressAmount = normalizeAmt(
                 totalAmount.toString(),
                 rewardToken.decimals?.toString()
               );
 
-              await contract.call("create", [
-                merkleOutput.merkleRoot,
-                rewardTokenAddress,
-                expressAmount.toString(),
-              ]);
+              await createSelfClaim(
+                recipientList,
+                {
+                  address: rewardTokenAddress,
+                  value: expressAmount.toString(),
+                  decimals: rewardToken.decimals?.toString() ?? '18',
+                });
             }}
             onSuccess={(result) => alert("Created airdrop submitted")}
-            onError={(error) =>
-              alert("Something went wrong (Creating selfclaim)!")
-            }
+            onError={(error) => {
+              console.error(error)
+              alert(error)
+            }}
             className="bg-accent1 hover:bg-accent2"
           >
             Create airdrop
