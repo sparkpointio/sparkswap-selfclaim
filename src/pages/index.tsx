@@ -31,6 +31,8 @@ export default function Home() {
                 src="/SparkSwapLogoWithWord.png"
                 alt="SparkSwap Logo"
                 className="h-8 w-auto mr-2 cursor-pointer"
+                width={100}
+                height={100}
               />
             </div>
           </Link>
