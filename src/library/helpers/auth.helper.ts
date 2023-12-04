@@ -33,7 +33,7 @@ export const getAuthUser = async (req: NextApiRequest): Promise<AuthUser> => {
 }
 
 export const formatAuthUser = (userWithRole: UserWithRole) => {
-  const formattedRoles = userWithRole.roles.map(val => {
+  const formattedRoles = userWithRole.roles.map((val: any) => {
     return {
       assignedAt: val.createdAt,
       ...val.role,
