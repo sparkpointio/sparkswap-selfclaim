@@ -29,31 +29,17 @@ export function useSelfClaimContract(customAddress?: Address) {
 
     try {
       const merkleOutput = await uploadMerkle(merkleinput);
-      return await contract.call('create', [
+      const result = await contract.call('register', [
         merkleOutput.merkleRoot,
         amount.address,
         amount.value,
       ])
+      setReceipt(result.receipt)
+      return result
     } catch (e: any) {
       throw new Error('Unable to create airdrop: ' + e.message)
     }
   }, [contract])
-
-  // subscribe to create events
-  useEffect(() => {
-    if (!contract) return
-
-    const handleCreateEvent = async (event: any) => {
-      setReceipt(event)
-    };
-    const unsubscribe = contract?.events.addEventListener('Create', handleCreateEvent)
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe()
-      }
-    };
-  }, [contract]);
 
   return {
     contract,

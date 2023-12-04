@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ConnectWallet, useAddress, Web3Button,} from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/src/resources/components/NavigationMenu";
 import {navigationLinks} from "../index";
@@ -22,7 +22,7 @@ export default function Home() {
     "0x373233a38ae21cf0c4f9de11570e7d5aa6824a1e, 145 \n0x8A672715e042f6e9d9B25C2ce9F84210e8206EF1, 1.069 \n0xC4515C02c334155bc60d86BD6F1119f58ea136e2, 10.81 \n0xe270bc73d658cbd72f721cb8c649aebf91b98d2b, 0.058"
   );
   // Use contract for selfclaim airdrop contract
-  const {create: createSelfClaim} = useSelfClaimContract(contracts.selfClaim.address.default);
+  const {create: createSelfClaim, receipt} = useSelfClaimContract(contracts.selfClaim.address.default);
 
   // Use contract for ERC20 contract
   const rewardToken = useTokenContract(rewardTokenAddress);
@@ -30,7 +30,6 @@ export default function Home() {
   // Event listeners for Token approval events
   const {approve} = useApproveToken()
   const {allowance} = useTokenAllowance(rewardToken.contract, contracts.selfClaim.address.default)
-
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
