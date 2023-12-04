@@ -7,7 +7,7 @@ import {NavigationMenu} from "@/src/resources/components/NavigationMenu";
 import {navigationLinks} from "../index";
 import {useFetchProofs} from "@/src/library/hooks/useMerkle";
 
-import {denormalizeAmount} from "@/src/library/utils/bignumber.utils";
+import {denormalizeAmt} from "@/src/library/utils/bignumber.utils";
 
 function hexToString(hex: string) {
   return parseInt(hex, 16).toString();
@@ -45,7 +45,7 @@ export default function ClaimPage() {
                 <Card
                   id={airdrop.id.toString()}
                   token={airdrop.tokenAddress}
-                  amount={denormalizeAmount(
+                  amount={denormalizeAmt(
                     hexToString(proof.claims.amount),
                     airdrop.tokenDecimal
                   )}
