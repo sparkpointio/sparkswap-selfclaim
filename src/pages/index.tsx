@@ -65,10 +65,6 @@ export default function Home() {
         <Head>
           <title>Self-Claim Airdrop | SparkSwap</title>
           <link rel="icon" href="/SparkSwapLogo.png"/>
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
-          />
         </Head>
 
         <div className="text-center bg-background1 rounded-lg p-8 shadow-md">
