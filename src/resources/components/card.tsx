@@ -7,7 +7,7 @@ import {
   useContract,
   useAddress,
 } from "@thirdweb-dev/react";
-import selfClaim from "@/src/library/constants/selfClaim";
+import contracts from "@/src/library/constants/contracts";
 
 /**
  * Render a card component with a message, button text, and button click handler.
@@ -38,8 +38,8 @@ const Card: React.FC<{
       </p>
       <div className="mt-4 w-full">
         <Web3Button
-          contractAddress={selfClaim.address}
-          contractAbi={selfClaim.ABI}
+          contractAddress={contracts.selfClaim.address.default}
+          contractAbi={contracts.selfClaim.ABI}
           action={async (contract) => {
             await contract.call("claim", proof);
           }}
