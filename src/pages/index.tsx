@@ -1,14 +1,15 @@
 import Link from "next/link";
-import { Inter } from "next/font/google";
+import {Inter} from "next/font/google";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
+import Image from "next/image";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({subsets: ["latin"]});
 
 export const navigationLinks = [
-  { href: "/", label: "Home" },
-  { href: "/claim", label: "Claim" },
-  { href: "/create", label: "Create" },
+  {href: "/", label: "Home"},
+  {href: "/claim", label: "Claim"},
+  {href: "/create", label: "Create"},
 ];
 
 export default function Home() {
@@ -26,7 +27,7 @@ export default function Home() {
         <div className="flex items-center justify-between px-6">
           <Link href="/" passHref>
             <div className="flex items-center">
-              <img
+              <Image
                 src="/SparkSwapLogoWithWord.png"
                 alt="SparkSwap Logo"
                 className="h-8 w-auto mr-2 cursor-pointer"
@@ -61,7 +62,7 @@ export default function Home() {
       >
         <Head>
           <title>Self-Claim Airdrop | SparkSwap</title>
-          <link rel="icon" href="/SparkSwapLogo.png" />
+          <link rel="icon" href="/SparkSwapLogo.png"/>
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap"
