@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
+import Image from "next/image";
 
 interface NavigationLink {
   href: string;
@@ -11,9 +12,10 @@ interface NavigationMenuProps {
   navigationLinks: NavigationLink[];
 }
 
-export const NavigationMenu: React.FC<NavigationMenuProps> = ({
-  navigationLinks,
-}) => {
+export const NavigationMenu: React.FC<NavigationMenuProps> = (
+  {
+    navigationLinks,
+  }) => {
   const router = useRouter();
 
   return (
@@ -21,10 +23,12 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       <div className="flex items-center justify-between px-6">
         <Link href="/" passHref>
           <div className="flex items-center">
-            <img
+            <Image
               src="/SparkSwapLogoWithWord.png"
               alt="SparkSwap Logo"
               className="h-8 w-auto mr-2 cursor-pointer"
+              width={100}
+              height={100}
             />
           </div>
         </Link>

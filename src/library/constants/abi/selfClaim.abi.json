@@ -1,10 +1,4 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { ConnectWallet, Web3Button, useContractRead, useContractEvents, useContract, useAddress } from "@thirdweb-dev/react";
-
-// Self-claim airdrop contract address and ABI
-const contractAddress = process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS ? process.env.NEXT_PUBLIC_SELFCLAIM_ADDRESS : ""
-const contractABI = [
+[
   {
     "inputs": [],
     "stateMutability": "nonpayable",
@@ -144,7 +138,7 @@ const contractABI = [
         "type": "uint256"
       }
     ],
-    "name": "create",
+    "name": "register",
     "outputs": [
       {
         "internalType": "uint256",
@@ -171,7 +165,7 @@ const contractABI = [
         "type": "address"
       }
     ],
-    "name": "Create",
+    "name": "Register",
     "type": "event"
   },
   {
@@ -393,35 +387,3 @@ const contractABI = [
     "type": "function"
   }
 ]
-
-export function fetchProofs() {
-  const wallet = useAddress();
-  const [ proofs, setProofs ] = useState<any>([]);
-
-  const url = process.env.NEXT_PUBLIC_SPARKSWAP_API
-  const apiKey = process.env.NEXT_PUBLIC_SPARKSWAP_KEY
-
-  const headers = {
-      'api-key': `${apiKey}`,
-      'Content-Type': 'application/json',
-  };
-
-  const input = {
-      "address": wallet
-  }
-
-  useEffect(() => {
-      async function fetchFromAPI() {
-          try {
-              const response = await axios.post(`${url}/api/fetchproofs`, input, { headers })
-              setProofs(response.data)
-          } catch (error) {
-              console.error(error);
-          }
-      }
-      
-      fetchFromAPI()
-  }, [wallet])
-  
-  return proofs
-}

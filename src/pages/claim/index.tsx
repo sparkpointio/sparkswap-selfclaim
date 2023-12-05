@@ -2,16 +2,12 @@
 
 import React from "react";
 import Card from "@/src/resources/components/card";
-import {
-  ConnectWallet,
-  useAddress,
-  useContractRead,
-} from "@thirdweb-dev/react";
-import { NavigationMenu } from "@/src/resources/components/NavigationMenu";
-import { navigationLinks } from "../index";
-import { useRouter } from "next/router";
-import { fetchProofs } from "@/src/library/hooks/claimAirdrop";
-import { expressAmountFrom18Decimals } from "@/src/library/hooks/createAirdrop";
+import {ConnectWallet, useAddress,} from "@thirdweb-dev/react";
+import {NavigationMenu} from "@/src/resources/components/NavigationMenu";
+import {navigationLinks} from "../index";
+import {useFetchProofs} from "@/src/library/hooks/useMerkle";
+
+import {denormalizeAmt} from "@/src/library/utils/bignumber.utils";
 
 function hexToString(hex: string) {
   return parseInt(hex, 16).toString();
@@ -19,12 +15,11 @@ function hexToString(hex: string) {
 
 export default function ClaimPage() {
   const wallet = useAddress();
-  const proofs = fetchProofs();
-  const router = useRouter();
+  const proofs = useFetchProofs();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3">
-      <NavigationMenu navigationLinks={navigationLinks} />
+      <NavigationMenu navigationLinks={navigationLinks}/>
 
       <h1 className="text-5xl font-bold tracking-tight text-text1 mt-28">
         Welcome, claimants
@@ -50,7 +45,7 @@ export default function ClaimPage() {
                 <Card
                   id={airdrop.id.toString()}
                   token={airdrop.tokenAddress}
-                  amount={expressAmountFrom18Decimals(
+                  amount={denormalizeAmt(
                     hexToString(proof.claims.amount),
                     airdrop.tokenDecimal
                   )}
