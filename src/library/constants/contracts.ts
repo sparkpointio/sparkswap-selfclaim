@@ -1,5 +1,5 @@
 import {Binance, BinanceTestnet} from "@thirdweb-dev/chains";
-import selfClaimABI from "@/src/library/constants/abi/selfClaim.abi.json";
+import selfClaimABI from "@/library/constants/abi/selfClaim.abi.json";
 
 const contracts = {
   selfClaim: {

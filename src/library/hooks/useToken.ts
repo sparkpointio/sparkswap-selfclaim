@@ -2,7 +2,7 @@ import {Address, Currency, SmartContract, useAddress, useContract} from '@thirdw
 import {useCallback, useEffect, useState} from "react";
 import {BaseContract, BigNumberish} from "ethers";
 import {TransactionReceipt} from "@ethersproject/abstract-provider";
-import {normalizeAmt} from "@/src/library/utils/bignumber.utils";
+import {normalizeAmt} from "@/library/utils/bignumber.utils";
 
 export type TokenAmount = {
   name: string;

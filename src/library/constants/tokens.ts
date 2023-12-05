@@ -1,5 +1,5 @@
 import {Binance, BinanceTestnet} from "@thirdweb-dev/chains";
-import erc20ABI from "@/src/library/constants/abi/erc20.abi.json";
+import erc20ABI from "@/library/constants/abi/erc20.abi.json";
 
 const tokens = {
   erc20ABI: erc20ABI,
