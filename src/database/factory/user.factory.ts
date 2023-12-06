@@ -1,6 +1,7 @@
 import {faker} from "@faker-js/faker";
 import userModel from "@/library/models/user.model";
 import {Prisma, User} from "@prisma/client";
+import {RoleEnum} from "@/library/enums/roles.enum";
 
 const userFactory = {
   /**
@@ -11,7 +12,18 @@ const userFactory = {
   },
   reloadDefinition: () => {
     userFactory.setDefinition({
-      walletAddress: faker.string.hexadecimal({length: 40})
+      walletAddress: faker.string.hexadecimal({length: 40}),
+      roles: {
+        create: [
+          {
+            role: {
+              connect: {
+                id: RoleEnum.Standard
+              },
+            }
+          },
+        ]
+      },
     })
 
     return userFactory
