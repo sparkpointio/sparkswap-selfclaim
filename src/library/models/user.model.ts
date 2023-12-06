@@ -72,7 +72,7 @@ export const hasAllRoles = async (user: User, roles: RoleEnum[]) => {
       id: user.id,
       roles: {
         some: {
-          role_id: {
+          roleId: {
             in: roles
           }
         }
@@ -83,7 +83,7 @@ export const hasAllRoles = async (user: User, roles: RoleEnum[]) => {
         select: {
           roles: {
             where: {
-              role_id: {
+              roleId: {
                 in: roles
               }
             }
