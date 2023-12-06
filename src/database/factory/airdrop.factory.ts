@@ -16,7 +16,9 @@ const airdropFactory = {
           id: user.id
         }
       },
-      name: faker.string.hexadecimal({length: 10})
+      name: faker.word.noun() + ' Airdrop',
+      startsAt: faker.date.soon({days: 10}),
+      expiresAt: faker.date.soon({days: 60})
     })
 
     return airdropFactory
