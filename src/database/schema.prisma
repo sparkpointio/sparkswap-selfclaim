@@ -72,9 +72,9 @@ model AirdropUser {
   userId      Int
   airdropId   Int
   merkleIndex Int
-  amount      Int
+  amount      String
   proof       String
-  claimdAt    DateTime?
+  claimedAt   DateTime?
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
 
