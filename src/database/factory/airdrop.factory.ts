@@ -9,11 +9,11 @@ const airdropFactory = {
       name: faker.string.hexadecimal({length: 40})
     }
   },
-  reloadDefinition: (user: User) => {
+  reloadDefinition: (creator: User) => {
     airdropFactory.setDefinition({
       creator: {
         connect: {
-          id: user.id
+          id: creator.id
         }
       },
       name: faker.word.noun() + ' Airdrop',
@@ -30,12 +30,14 @@ const airdropFactory = {
 
     return airdropFactory
   },
-  create: async (quantity = 1): Promise<Airdrop[]> => {
+  create: async (quantity = 1, creator?: User): Promise<Airdrop[]> => {
     let records: Airdrop[] = [];
     for (let i = 0; i < quantity; i++) {
+      if (!creator) {
+         creator = (await userFactory.create(1))[0]
+      }
       userFactory.reloadDefinition()
-      const user = await userFactory.create(1)
-      airdropFactory.reloadDefinition(user[0])
+      airdropFactory.reloadDefinition(creator)
       records.push(await airdropModel.create(airdropFactory.definition))
     }
     return records
