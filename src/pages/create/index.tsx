@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {ConnectWallet, useAddress, Web3Button,} from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/resources/components/NavigationMenu";
 import {navigationLinks} from "../index";
-import {formatRecipientsForMerkle} from "@/library/utils/merkle.utils";
-import {uploadMerkle} from "@/library/hooks/useMerkle";
+import {formatInputRecipients, getMerkleInfo} from "@/library/utils/merkle.utils";
 import {useApproveToken, useTokenAllowance, useTokenContract} from "@/library/hooks/useToken";
 import tokens from "@/library/constants/tokens";
 import contracts from "@/library/constants/contracts";
@@ -111,19 +110,13 @@ export default function Home() {
             contractAddress={contracts.selfClaim.address.default}
             contractAbi={contracts.selfClaim.ABI}
             action={async (contract) => {
-              const [recipientList, totalAmount] = formatRecipientsForMerkle(recipients);
-
-              const expressAmount = normalizeAmt(
-                totalAmount.toString(),
-                rewardToken.decimals?.toString()
-              );
-
+              const [recipientList, totalAmount] = formatInputRecipients(recipients, rewardToken);
+              // todo: save merkle info in database
               await createSelfClaim(
-                recipientList,
+                getMerkleInfo(recipientList),
                 {
                   address: rewardTokenAddress,
-                  value: expressAmount.toString(),
-                  decimals: rewardToken.decimals?.toString() ?? '18',
+                  value: totalAmount,
                 });
             }}
             onSuccess={(result) => alert("Created airdrop submitted")}

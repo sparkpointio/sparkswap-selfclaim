@@ -1,9 +1,8 @@
 import {Address, useContract} from "@thirdweb-dev/react";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useState} from "react";
 import contracts from "@/library/constants/contracts";
-import {uploadMerkle} from "@/library/hooks/useMerkle";
-import {AddressAmount} from "@/library/utils/merkle.utils";
 import {BigNumberish} from "ethers";
+import {MerkleDistributorInfoType} from "@medardm/merkle-distributor";
 
 export function useSelfClaimContract(customAddress?: Address) {
   const {contract, error: contractErr} = useContract(
@@ -13,26 +12,19 @@ export function useSelfClaimContract(customAddress?: Address) {
   const [error, setError] = useState<any>(null)
   const [receipt, setReceipt] = useState<any>()
   const create = useCallback(async (
-    recipientList: AddressAmount[],
-    amount: {
+    merkleInfo: MerkleDistributorInfoType,
+    totalAmount: {
       address: Address
       value: BigNumberish;
-      decimals: number | string;
     },
   ) => {
     if (!contract) return
 
-    const merkleinput = {
-      recipient: recipientList,
-      tokenDecimal: amount.decimals?.toString(),
-    };
-
     try {
-      const merkleOutput = await uploadMerkle(merkleinput);
       const result = await contract.call('register', [
-        merkleOutput.merkleRoot,
-        amount.address,
-        amount.value,
+        merkleInfo.merkleRoot,
+        totalAmount.address,
+        totalAmount.value,
       ])
       setReceipt(result.receipt)
       return result

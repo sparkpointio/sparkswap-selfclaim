@@ -43,7 +43,7 @@ export function formatInputRecipients(inputString: string, tokenContract: TokenC
     recipientList = recipientMap
   }
 
-  return [recipientList, totalAmount.toString()];
+  return [recipientList, normalizeAmt(totalAmount.toString(), tokenContract.decimals)];
 }
 
 export function getMerkleInfo(balanceList: BalanceFormatNew[] | BalanceFormatOld): MerkleDistributorInfoType {
