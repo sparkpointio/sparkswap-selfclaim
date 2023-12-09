@@ -5,8 +5,6 @@ import refreshDatabase from "@/database/refreshDatabase";
 import seedPreRequisiteData from "@/database/seeders/index.seeder";
 
 beforeAll(async () => {
-  await refreshDatabase()
-  await seedPreRequisiteData()
 })
 
 describe('User factory', () => {
