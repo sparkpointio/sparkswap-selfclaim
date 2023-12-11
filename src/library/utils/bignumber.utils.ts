@@ -3,7 +3,6 @@ import BigNumber from "bignumber.js";
 BigNumber.config({
     DECIMAL_PLACES: 20,
     EXPONENTIAL_AT: 20,
-    CRYPTO: true,
 });
 
 export function normalizeAmt(amount: string, decimals: number | string = '18', base = 10): string {

@@ -2,7 +2,7 @@ import {Address, useContract} from "@thirdweb-dev/react";
 import {useCallback, useState} from "react";
 import contracts from "@/library/constants/contracts";
 import {BigNumberish} from "ethers";
-import {MerkleDistributorInfoType} from "@medardm/merkle-distributor";
+import {MerkleDistributorInfo} from "@medardm/merkle-distributor";
 
 export function useSelfClaimContract(customAddress?: Address) {
   const {contract, error: contractErr} = useContract(
@@ -12,7 +12,7 @@ export function useSelfClaimContract(customAddress?: Address) {
   const [error, setError] = useState<any>(null)
   const [receipt, setReceipt] = useState<any>()
   const create = useCallback(async (
-    merkleInfo: MerkleDistributorInfoType,
+    merkleInfo: MerkleDistributorInfo,
     totalAmount: {
       address: Address
       value: BigNumberish;
