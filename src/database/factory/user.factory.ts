@@ -2,17 +2,18 @@ import {faker} from "@faker-js/faker";
 import userModel from "@/library/models/user.model";
 import {Prisma, User} from "@prisma/client";
 import {RoleEnum} from "@/library/enums/roles.enum";
+import {ethers} from "ethers";
 
 const userFactory = {
   /**
    * Initialize model attributes
    */
   definition: <Prisma.UserCreateArgs> {
-    data: {walletAddress: faker.string.hexadecimal({length: 40})}
+    data: {walletAddress: ethers.Wallet.createRandom().address}
   },
   reloadDefinition: () => {
     userFactory.setDefinition({
-      walletAddress: faker.string.hexadecimal({length: 40}),
+      walletAddress: ethers.Wallet.createRandom().address,
       roles: {
         create: [
           {
