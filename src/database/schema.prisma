@@ -54,8 +54,9 @@ model Airdrop {
   name            String        @unique
   desc            String?
   merkleRoot      String?
+  tokenTotal      String?
+  tokenTotalHex   String?
   contractAddress String?
-  totalRewards    String?
   startsAt        DateTime?
   expiresAt       DateTime?
   createdAt       DateTime?     @default(now())
@@ -73,6 +74,7 @@ model AirdropUser {
   airdropId   Int
   merkleIndex Int
   amount      String
+  amountHex   String
   proof       String
   claimedAt   DateTime?
   createdAt   DateTime? @default(now())

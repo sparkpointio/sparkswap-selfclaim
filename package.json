@@ -40,6 +40,7 @@
     "####---DATABASE/PRISMA SCRIPTS---#####": "----",
     "migrate:dev": "npx prisma migrate dev && dotenv -e .env.test -- prisma migrate dev",
     "migrate:reset": "npx prisma migrate reset",
+    "db:seed:reset": "npx prisma db push --force-reset && npx prisma db seed",
     "db:seed": "npx prisma db seed",
     "prisma:studio": "npx prisma studio",
     "prisma:generate": "npx prisma generate",
