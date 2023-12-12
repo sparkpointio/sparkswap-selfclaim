@@ -7,10 +7,14 @@ export default async function seedRoles() {
 
   for (const value of roleList) {
     const key = Number(RoleEnum[value])
-    await roleModel.create({
-      data: {
+    await roleModel.upsert({
+      create: {
         id: key,
         name: value
+      },
+      update: {},
+      where: {
+        id: key,
       }
     })
   }

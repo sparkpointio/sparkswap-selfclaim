@@ -9,18 +9,22 @@ datasource db {
 }
 
 model User {
-  id            Int        @id @default(autoincrement())
-  walletAddress String     @unique
-  lastLoginAt   DateTime?
-  createdAt     DateTime?  @default(now())
-  updatedAt     DateTime?  @updatedAt
-  deletedAt     DateTime?
-  roles         RoleUser[]
+  id              Int           @id @default(autoincrement())
+  walletAddress   String        @unique
+  lastLoginAt     DateTime?
+  createdAt       DateTime?     @default(now())
+  updatedAt       DateTime?     @updatedAt
+  deletedAt       DateTime?
+  creator         User?         @relation("CreatorUsers", fields: [creatorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  creatorId       Int?          @unique
+  createdUsers    User[]        @relation("CreatorUsers")
+  roles           RoleUser[]
+  airdropsJoined  AirdropUser[]
+  airdropsCreated Airdrop[]
 
   @@index([walletAddress])
 }
 
-// customize your new table, please delete this comment after
 model Role {
   id        Int        @id @default(autoincrement())
   name      String     @unique
@@ -31,14 +35,50 @@ model Role {
 }
 
 model RoleUser {
-  user      User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  role      Role      @relation(fields: [role_id], references: [id], onDelete: Cascade)
-  user_id   Int
-  role_id   Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  userId    Int
+  roleId    Int
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@id([user_id, role_id])
-  @@index([user_id])
-  @@index([role_id])
+  @@id([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+}
+
+model Airdrop {
+  creator         User          @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId       Int
+  id              Int           @id @default(autoincrement())
+  name            String        @unique
+  desc            String?
+  merkleRoot      String?
+  contractAddress String?
+  totalRewards    String?
+  startsAt        DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime?     @default(now())
+  updatedAt       DateTime?     @updatedAt
+  deletedAt       DateTime?
+  recipients      AirdropUser[]
+
+  @@index([creatorId])
+}
+
+model AirdropUser {
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  airdrop     Airdrop   @relation(fields: [airdropId], references: [id], onDelete: Cascade)
+  userId      Int
+  airdropId   Int
+  merkleIndex Int
+  amount      String
+  proof       String
+  claimedAt   DateTime?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+
+  @@id([userId, airdropId])
+  @@index([userId])
+  @@index([airdropId])
 }
