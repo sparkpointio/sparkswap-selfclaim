@@ -10,6 +10,7 @@ import {normalizeAmt, toBigNumber} from "@/library/utils/bignumber.utils";
 export function formatInputRecipients(inputString: string, decimals = 18, useOldFormat: boolean = true): {
   recipientList: BalanceFormatNew[] | BalanceFormatOld,
   totalAmount: Amount
+  totalAmountValue: Amount
 } {
   const lines = inputString.split('\n');
   let totalAmount = toBigNumber(0);
@@ -42,7 +43,8 @@ export function formatInputRecipients(inputString: string, decimals = 18, useOld
 
   return {
     recipientList: recipientList,
-    totalAmount: normalizeAmt(totalAmount.toString(), decimals)
+    totalAmount: totalAmount.toString(),
+    totalAmountValue: normalizeAmt(totalAmount.toString(), decimals)
   };
 }
 
