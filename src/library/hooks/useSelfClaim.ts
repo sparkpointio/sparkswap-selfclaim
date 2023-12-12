@@ -4,10 +4,10 @@ import contracts from "@/library/constants/contracts";
 import {BigNumberish} from "ethers";
 import {MerkleDistributorInfo} from "@medardm/merkle-distributor";
 
-export function useSelfClaimContract(customAddress?: Address) {
+export function useOldSelfClaimContract(customAddress?: Address) {
   const {contract, error: contractErr} = useContract(
-    customAddress ?? contracts.selfClaim.address.default,
-    contracts.selfClaim.ABI
+    customAddress ?? contracts.selfClaimOld.address.default,
+    contracts.selfClaimOld.ABI
   );
   const [error, setError] = useState<any>(null)
   const [receipt, setReceipt] = useState<any>()
