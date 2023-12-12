@@ -7,7 +7,10 @@ import {
 import {Amount} from "@thirdweb-dev/sdk";
 import {normalizeAmt, toBigNumber} from "@/library/utils/bignumber.utils";
 
-export function formatInputRecipients(inputString: string, decimals = 18, useOldFormat: boolean = true): [BalanceFormatNew[] | BalanceFormatOld, Amount] {
+export function formatInputRecipients(inputString: string, decimals = 18, useOldFormat: boolean = true): {
+  recipientList: BalanceFormatNew[] | BalanceFormatOld,
+  totalAmount: Amount
+} {
   const lines = inputString.split('\n');
   let totalAmount = toBigNumber(0);
   let recipientList: BalanceFormatNew[] | BalanceFormatOld
@@ -37,7 +40,10 @@ export function formatInputRecipients(inputString: string, decimals = 18, useOld
     recipientList = recipientMap
   }
 
-  return [recipientList, normalizeAmt(totalAmount.toString(), decimals)];
+  return {
+    recipientList: recipientList,
+    totalAmount: normalizeAmt(totalAmount.toString(), decimals)
+  };
 }
 
 export function getMerkleInfo(balanceList: BalanceFormatNew[] | BalanceFormatOld): MerkleDistributorInfo {

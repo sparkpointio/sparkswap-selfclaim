@@ -1,10 +1,10 @@
 import {Binance} from "@thirdweb-dev/chains";
 import {BoolFromString} from "@/library/utils/index.utils";
 
-const app = {
+const app: { environment: 'production' | 'development' | 'test' | string | undefined; guards: { enabled: boolean } } = {
   environment: process.env.APP_ENV ?? process.env.NODE_ENV,
   guards: {
-    enabled: BoolFromString(process.env.ENABLE_GUARDS?? 'true')
+    enabled: BoolFromString(process.env.ENABLE_GUARDS ?? 'true')
   }
 }
 
