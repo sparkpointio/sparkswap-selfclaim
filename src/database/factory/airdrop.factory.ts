@@ -81,7 +81,7 @@ const airdropFactory = {
       const merkleInfo = getMerkleInfo(merkleRecipientList);
 
       // save generated merkle info
-      if (config.app.environment === 'development') {
+      if (config.merkle.createFile) {
         fs.writeFileSync(`./generated-merkle/${faker.string.uuid()}.json`, JSON.stringify(merkleInfo));
       }
 

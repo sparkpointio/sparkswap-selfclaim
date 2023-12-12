@@ -28,10 +28,15 @@ const constants = {
   }
 }
 
+const merkle = {
+  createFile: false
+}
+
 const config = {
   app,
   api,
-  constants
+  constants,
+  merkle
 }
 
 export default config
