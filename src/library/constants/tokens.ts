@@ -13,6 +13,16 @@ const tokens = {
     decimals: 18,
     projectLink: 'https://sparkpoint.io/',
   },
+  sfuel: {
+    symbol: 'SFUEL',
+    address: {
+      default: 'sfuel',
+      [Binance.chainId]: 'sfuel',
+      [BinanceTestnet.chainId]: 'sfuel',
+    },
+    decimals: 18,
+    projectLink: 'https://sparkpoint.io/',
+  },
 }
 
 export default tokens;
