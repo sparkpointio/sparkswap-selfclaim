@@ -38,7 +38,7 @@ const Card: React.FC<{
       </p>
       <div className="mt-4 w-full">
         <Web3Button
-          contractAddress={contracts.selfClaimOld.address.default}
+          contractAddress={contracts.selfClaimOld.address}
           contractAbi={contracts.selfClaimOld.ABI}
           action={async (contract) => {
             await contract.call("claim", proof);

@@ -66,7 +66,7 @@ const airdropFactory = {
     let records: AirdropWithMerkle[] = [];
     const rewardToken = <TokenContract><unknown>{
       decimals: tokens.srk.decimals,
-      address: tokens.srk.address.default,
+      address: tokens.srk.address,
     }
     for (let i = 0; i < quantity; i++) {
       // generate sample recipients (from textarea field in form)
