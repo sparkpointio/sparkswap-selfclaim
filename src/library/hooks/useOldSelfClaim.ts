@@ -6,7 +6,7 @@ import {MerkleDistributorInfo} from "@medardm/merkle-distributor";
 
 export function useOldSelfClaimContract(customAddress?: Address) {
   const {contract, error: contractErr} = useContract(
-    customAddress ?? contracts.selfClaimOld.address.default,
+    customAddress ?? contracts.selfClaimOld.address,
     contracts.selfClaimOld.ABI
   );
   const [error, setError] = useState<any>(null)
@@ -40,31 +40,3 @@ export function useOldSelfClaimContract(customAddress?: Address) {
     error
   };
 }
-
-/**
- * OLD listener events to be removed once it is implement in a more efficient way in the hook
- */
-// Event listeners for Create events
-// const [lastReadEvent, setLastReadEvent] = useState(0);
-// const airdropEvents = useContractEvents(airdropContract.contract, "Create", {
-//   queryFilter: {
-//     filters: {
-//       projectOwner: wallet, // e.g. Only events where tokenId = 123
-//     },
-//     order: "desc", // Order of events ("asc" or "desc")
-//   },
-//   subscribe: true, // Subscribe to new events
-// });
-//
-// useEffect(() => {
-//   try {
-//     if (airdropEvents.data && airdropEvents.data.length > lastReadEvent) {
-//       setLastReadEvent(airdropEvents.data.length);
-//       alert(
-//         `Self-claim airdrop created, ID #${airdropEvents.data[0].data.id.toString()}`
-//       );
-//     }
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }, [lastReadEvent, setLastReadEvent, airdropEvents]);

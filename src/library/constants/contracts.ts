@@ -1,12 +1,23 @@
 import {Binance, BinanceTestnet} from "@thirdweb-dev/chains";
-import OLD_SELFCLAIM_ABI from "@/library/constants/abi/oldSelfClaim.abi.json";
-import SELFCLAIM_FACTORY_ABI from "@/library/constants/abi/selfclaimFactory.abi.json";
-import SELFCLAIM_BEACON_ABI from "@/library/constants/abi/selfclaimBeacon.abi.json";
 import tokens, {TokenConstant} from "@/library/constants/tokens";
 import {ChainId} from "@thirdweb-dev/sdk";
+import {oldSelfClaimAbi, selfClaimBeaconAbi, selfClaimFactoryAbi} from "@/library/constants/abis";
+import type {AbiParametersToPrimitiveTypes, ExtractAbiFunction, ExtractAbiFunctionNames} from "abitype";
+import {Address} from "@thirdweb-dev/react";
+import {BigNumber} from "ethers";
+
+export type SelfClaimFactoryFunctions = ExtractAbiFunctionNames<typeof selfClaimFactoryAbi, 'view'>
+
+export type CreateSelfClaimInputTypes = {
+  feeTokenAddress: Address;
+  rewardTokenAddress: Address;
+  merkleRoot: string;
+  expiry: string;
+  totalAmount: string | number;
+}
 
 type ContractConstant = {
-  ABI: any[];
+  ABI: any;
   base?: string;
   address: string;
   addresses: {
@@ -20,7 +31,7 @@ type ContractConstants = {
 
 const contracts: ContractConstants = {
   selfClaimOld: {
-    ABI: OLD_SELFCLAIM_ABI,
+    ABI: oldSelfClaimAbi,
     address: '0xD667c3C39dB57abbbd74FaCD718dad1c93A2D6e3',
     addresses: {
       [Binance.chainId]: '0xD667c3C39dB57abbbd74FaCD718dad1c93A2D6e3',
@@ -28,7 +39,7 @@ const contracts: ContractConstants = {
     }
   },
   selfClaimFactory: {
-    ABI: SELFCLAIM_FACTORY_ABI,
+    ABI: selfClaimFactoryAbi,
     base: '0x371DB7f8904af80daDAc7Ae1b4898a7A61A63889',
     // proxy contract
     address: '0x1f5aDfe23e59B5c301DFD4C5990547f6B323CEDc',
@@ -36,15 +47,11 @@ const contracts: ContractConstants = {
       [Binance.chainId]: '0x1f5aDfe23e59B5c301DFD4C5990547f6B323CEDc',
       [BinanceTestnet.chainId]: '0x1f5aDfe23e59B5c301DFD4C5990547f6B323CEDc',
     },
-    feeTokens: {
-      'primary': tokens.srk,
-      'secondary': tokens.sfuel
-    }
-  } as ContractConstant & {feeTokens: { primary: TokenConstant, secondary: TokenConstant }},
+  },
   selfClaimBeacon: {
     address: '',
     addresses: {},
-    ABI: SELFCLAIM_BEACON_ABI,
+    ABI: selfClaimBeaconAbi,
   },
 }
 
