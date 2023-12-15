@@ -1,5 +1,4 @@
 import {Binance, BinanceTestnet} from "@thirdweb-dev/chains";
-import erc20ABI from "@/library/constants/abi/erc20.abi.json";
 import {ChainId} from "@thirdweb-dev/sdk";
 
 
@@ -14,12 +13,10 @@ export type TokenConstant = {
 };
 
 export type TokenConstants = {
-  erc20ABI: any; // Replace 'unknown' with the actual type of erc20ABI
   [tokenName: string]: TokenConstant;
 };
 
 const tokens: TokenConstants = {
-  erc20ABI: <any> erc20ABI,
   srk: {
     symbol: 'SRK',
     address: '0xe09B8661D80CF24dB230A167969d18B94a5a3266',
