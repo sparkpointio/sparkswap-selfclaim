@@ -24,11 +24,7 @@ export type AirdropWithMerkle = {
   merkleInfo: MerkleDistributorInfo
 }
 const airdropFactory = {
-  definition: <Prisma.AirdropCreateArgs>{
-    data: {
-      name: faker.string.hexadecimal({length: 40})
-    }
-  },
+  definition: <Prisma.AirdropCreateArgs>{},
   reloadDefinition: (merkleInfo: {
     merkleRoot: string,
     tokenTotal: Amount
@@ -90,6 +86,7 @@ const airdropFactory = {
       }
       userFactory.reloadDefinition()
 
+      // reload definition with custom merkle data
       airdropFactory.reloadDefinition({
         merkleRoot: merkleInfo.merkleRoot,
         tokenTotal: totalAmount,
@@ -97,6 +94,7 @@ const airdropFactory = {
         rewardTokenAddress: rewardToken.address
       }, creator)
 
+      // create set of airdrop with the merkle data which will be used when registering participants
       records.push({
         airdrop: await airdropModel.create(airdropFactory.definition),
         rewardToken: rewardToken,
