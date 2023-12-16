@@ -38,19 +38,3 @@ export function useFetchProofs() {
   return proofs
 }
 
-export async function uploadMerkle(merkleInput: any) {
-    const url = process.env.NEXT_PUBLIC_SPARKSWAP_API
-    const apiKey = process.env.NEXT_PUBLIC_SPARKSWAP_KEY
-
-    const headers = {
-        'api-key': `${apiKey}`,
-        'Content-Type': 'application/json',
-    };
-
-    try {
-        const response = await axios.post(`${url}/api/merkleupload`, merkleInput, {headers})
-        return response.data
-    } catch (error) {
-        console.error(error);
-    }
-}
