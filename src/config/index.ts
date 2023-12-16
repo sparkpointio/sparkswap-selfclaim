@@ -1,5 +1,6 @@
 import {Binance} from "@thirdweb-dev/chains";
 import {BoolFromString} from "@/library/utils/index.utils";
+import moment from "moment";
 
 const app: { environment: 'production' | 'development' | 'test' | string | undefined; guards: { enabled: boolean } } = {
   environment: process.env.APP_ENV ?? process.env.NODE_ENV,
@@ -32,11 +33,17 @@ const merkle = {
   createFile: false
 }
 
+const selfclaim = {
+  start: moment(),
+  expiry: moment().add(2, 'months')
+}
+
 const config = {
   app,
   api,
   constants,
-  merkle
+  merkle,
+  selfclaim
 }
 
 export default config

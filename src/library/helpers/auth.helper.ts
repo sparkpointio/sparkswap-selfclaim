@@ -1,7 +1,7 @@
 import {NextApiRequest} from "next";
 import {ThirdwebAuthUser} from "@thirdweb-dev/auth/next";
 import {getUser} from "@/pages/api/auth/[...thirdweb]";
-import userModel, {assignRole, UserWithRole} from "@/library/models/user.model";
+import userModel, {assignRole, hasRole, UserWithRole} from "@/library/models/user.model";
 import config from "@/config/index";
 import {RoleEnum} from "@/library/enums/roles.enum";
 
@@ -22,10 +22,11 @@ export type AuthUser = ThirdwebAuthUser & {
 }
 
 export const getAuthUser = async (req: NextApiRequest): Promise<AuthUser> => {
-  if (process.env.APP_ENV === 'test' && !config.app.guards.enabled) {
+  if (process.env.APP_ENV === 'test' || !config.app.guards.enabled) {
     /**
      * This is helpful when testing the API thru postman
      */
+    let authUser
     let testUser = await userModel.findFirst()
     if (!testUser) {
       testUser = await userModel.create({
@@ -34,8 +35,14 @@ export const getAuthUser = async (req: NextApiRequest): Promise<AuthUser> => {
         }
       })
     }
-    const userWithRole = await assignRole(testUser, RoleEnum.SuperAdmin)
-    const authUser = formatAuthUser(userWithRole)
+    if (!(await hasRole(testUser, RoleEnum.SuperAdmin))) {
+      const userWithRole = await assignRole(testUser, RoleEnum.SuperAdmin)
+      authUser = formatAuthUser(userWithRole)
+    } else {
+      authUser = formatAuthUser(<UserWithRole> testUser)
+    }
+
+
     return <AuthUser>{
       address: authUser.walletAddress,
       session: {
