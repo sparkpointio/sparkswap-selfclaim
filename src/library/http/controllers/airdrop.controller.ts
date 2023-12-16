@@ -7,7 +7,6 @@ import {getAuthUser} from "@/library/helpers/auth.helper";
 
 const airdropController = {
   find: async (req: NextApiRequest, res: NextApiResponse) => {
-    console.log(req.query.id)
     const queryData = await airdropRequest.validate({'id': req.query.id}, 'find')
 
     const data = await airdropModel.findFirst({
