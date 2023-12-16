@@ -15,6 +15,7 @@ export type TokenAmount = {
 
 export type TokenContract = {
   contract?: SmartContract<BaseContract>;
+  address?: string;
   name?: string;
   symbol?: string;
   decimals?: number;
@@ -44,6 +45,7 @@ export function useTokenContract(address: Address): TokenContract {
 
   return {
     contract,
+    address: address,
     ...details,
     balanceOf: contract?.erc20.balanceOf,
     error

@@ -16,13 +16,14 @@ model User {
   updatedAt       DateTime?     @updatedAt
   deletedAt       DateTime?
   creator         User?         @relation("CreatorUsers", fields: [creatorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  creatorId       Int?          @unique
+  creatorId       Int?
   createdUsers    User[]        @relation("CreatorUsers")
   roles           RoleUser[]
   airdropsJoined  AirdropUser[]
   airdropsCreated Airdrop[]
 
   @@index([walletAddress])
+  @@index([creatorId])
 }
 
 model Role {
@@ -48,20 +49,22 @@ model RoleUser {
 }
 
 model Airdrop {
-  creator         User          @relation(fields: [creatorId], references: [id], onDelete: Cascade)
-  creatorId       Int
-  id              Int           @id @default(autoincrement())
-  name            String        @unique
-  desc            String?
-  merkleRoot      String?
-  contractAddress String?
-  totalRewards    String?
-  startsAt        DateTime?
-  expiresAt       DateTime?
-  createdAt       DateTime?     @default(now())
-  updatedAt       DateTime?     @updatedAt
-  deletedAt       DateTime?
-  recipients      AirdropUser[]
+  creator            User          @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId          Int
+  id                 Int           @id @default(autoincrement())
+  name               String        @unique
+  desc               String?
+  merkleRoot         String?
+  tokenTotal         String?
+  tokenTotalHex      String?
+  contractAddress    String?
+  rewardTokenAddress String?
+  startsAt           DateTime?
+  expiresAt          DateTime?
+  createdAt          DateTime?     @default(now())
+  updatedAt          DateTime?     @updatedAt
+  deletedAt          DateTime?
+  recipients         AirdropUser[]
 
   @@index([creatorId])
 }
@@ -73,7 +76,8 @@ model AirdropUser {
   airdropId   Int
   merkleIndex Int
   amount      String
-  proof       String
+  amountHex   String
+  proof       Json
   claimedAt   DateTime?
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt

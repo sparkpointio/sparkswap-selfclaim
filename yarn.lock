@@ -1401,12 +1401,14 @@
   resolved "https://registry.yarnpkg.com/@magic-sdk/types/-/types-11.6.2.tgz#1fb6205b516c3f0c5787e82aecd0e667d2de1cd2"
   integrity sha512-+Emd+9HeeVi2E0bktJ33YleA/ozEuKYCBfmSbGRxlntdyUvaojeC+WPf2jN1WH8FjUEiljAjrEJTTZyRGCL8SQ==
 
-"@medardm/merkle-distributor@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@medardm/merkle-distributor/-/merkle-distributor-1.1.3.tgz#12b7aa1f92c3580b403883fe88e294461311d4cc"
-  integrity sha512-z2ibguOFbp6dfph97Te/Hsfq2FqpmaDgShQ+fYX5939buyn89XlAX914n/Sie9VT/pwjlsi+WBzqctKBLlnPAQ==
+"@medardm/merkle-distributor@^1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@medardm/merkle-distributor/-/merkle-distributor-1.1.7.tgz#b03c8d133be6fa8a032734b78b46ad7dde2d75ce"
+  integrity sha512-v8o5PgoRl7hvEZVqEHHn+fNM/BmBS0hv4nnKU/PhAkEkKjS/zKDsmgAGc8cp3e3JB5Uv0TJWZ+um2tkfneBa0Q==
   dependencies:
     "@openzeppelin/contracts" "4.7.0"
+    ethereumjs-util "^6.2.1"
+    ethers "^5.7.2"
 
 "@metamask/eth-sig-util@^4.0.0":
   version "4.0.1"

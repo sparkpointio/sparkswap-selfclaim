@@ -4,19 +4,22 @@ import {ParseArgsConfig} from "util";
 import seedTestData from "./seeders/test/index.seeder";
 import seedProdData from "./seeders/prod/index.seeder";
 import seedPreRequisiteData from "./seeders/index.seeder";
+import {TableNames} from "@/database/refreshDatabase";
 
 const prisma = new PrismaClient()
 
 const options = {
   category: { type: 'string' },
+  table: { type: 'string' },
 }
 
 /**
- *  pass [-- --category test] in command line to specify category
+ *  pass [-- --category prod] in command line to specify category
+ *  pass [-- --table prod] in command line to specify category
  */
 async function main() {
   const {
-    values: { category },
+    values: { category , table},
   } = parseArgs({ options } as ParseArgsConfig)
 
   // seed prerequisite data
@@ -28,7 +31,7 @@ async function main() {
       break
     default:
       /** seed */
-      await seedTestData();
+      await seedTestData(table as TableNames);
       break
   }
 }

@@ -110,13 +110,13 @@ export default function Home() {
             contractAddress={contracts.selfClaim.address.default}
             contractAbi={contracts.selfClaim.ABI}
             action={async (contract) => {
-              const [recipientList, totalAmount] = formatInputRecipients(recipients, rewardToken);
+              const {merkleRecipientList, totalAmountValue} = formatInputRecipients(recipients, rewardToken.decimals);
               // todo: save merkle info in database
               await createSelfClaim(
-                getMerkleInfo(recipientList),
+                getMerkleInfo(merkleRecipientList),
                 {
                   address: rewardTokenAddress,
-                  value: totalAmount,
+                  value: totalAmountValue,
                 });
             }}
             onSuccess={(result) => alert("Created airdrop submitted")}

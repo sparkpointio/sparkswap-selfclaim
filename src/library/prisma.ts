@@ -18,22 +18,26 @@ export const prisma = globalForPrisma.prisma || new PrismaClient(
     user: {
       $allOperations({ model, operation, args, query }) {
         /* your custom logic here */
-        args = {
-          ...args,
-          include: {
-            roles: {
-              select: {
-                role: {
-                  select: {
-                    id: true,
-                    name: true,
-                    desc: true
-                  }
-                },
-                createdAt: true
+        if (
+          operation !== 'createMany'
+        ) {
+          args = {
+            ...args,
+            include: {
+              roles: {
+                select: {
+                  role: {
+                    select: {
+                      id: true,
+                      name: true,
+                      desc: true
+                    }
+                  },
+                  createdAt: true
+                }
               }
-            }
-          },
+            },
+          };
         }
         return query(args)
       },
