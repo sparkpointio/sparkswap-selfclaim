@@ -4,7 +4,6 @@ import React from "react";
 import Card from "@/resources/components/card";
 import {ConnectWallet, useAddress,} from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/resources/components/NavigationMenu";
-import {navigationLinks} from "../index";
 import {useFetchProofs} from "@/library/hooks/useMerkle";
 
 import {denormalizeAmt} from "@/library/utils/bignumber.utils";
@@ -19,7 +18,7 @@ export default function ClaimPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3">
-      <NavigationMenu navigationLinks={navigationLinks}/>
+      <NavigationMenu/>
 
       <h1 className="text-5xl font-bold tracking-tight text-text1 mt-28">
         Welcome, claimants

@@ -3,19 +3,13 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import Image from "next/image";
 
-interface NavigationLink {
-  href: string;
-  label: string;
-}
+export const navigationLinks = [
+  {href: "/", label: "Home"},
+  {href: "/claim", label: "Claim"},
+  {href: "/create", label: "Create"},
+];
 
-interface NavigationMenuProps {
-  navigationLinks: NavigationLink[];
-}
-
-export const NavigationMenu: React.FC<NavigationMenuProps> = (
-  {
-    navigationLinks,
-  }) => {
+export const NavigationMenu = () => {
   const router = useRouter();
 
   return (

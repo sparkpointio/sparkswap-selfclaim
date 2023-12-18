@@ -40,9 +40,6 @@ const userModel = {
             },
           ]
         },
-      },
-      include: {
-        roles: true
       }
     })
   },
