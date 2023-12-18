@@ -58,6 +58,7 @@
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0",
     "ethers": "^5.7.2",
+    "flowbite-react": "^0.7.2",
     "formidable": "^3.5.1",
     "http-status-codes": "^2.3.0",
     "hygen": "^6.2.11",
