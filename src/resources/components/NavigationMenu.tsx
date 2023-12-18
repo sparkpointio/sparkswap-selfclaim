@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import Image from "next/image";
+import {ConnectWallet} from "@thirdweb-dev/react";
 
 export const navigationLinks = [
   {href: "/", label: "Home"},
@@ -26,7 +27,7 @@ export const NavigationMenu = () => {
             />
           </div>
         </Link>
-        <ul className="flex space-x-6">
+        <ul className="flex space-x-6 items-center">
           {navigationLinks.map((link, index) => (
             <li key={link.href}>
               <Link href={link.href} passHref>
@@ -42,6 +43,13 @@ export const NavigationMenu = () => {
               </Link>
             </li>
           ))}
+          <li>
+              <ConnectWallet
+                theme="dark"
+                btnTitle="Connect Wallet"
+                className="hover:bg-accent1"
+              />
+          </li>
         </ul>
       </div>
       {router.pathname === "/" && (

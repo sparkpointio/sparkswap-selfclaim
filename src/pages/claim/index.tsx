@@ -2,7 +2,7 @@
 
 import React from "react";
 import Card from "@/resources/components/card";
-import {ConnectWallet, useAddress,} from "@thirdweb-dev/react";
+import {useAddress,} from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/resources/components/NavigationMenu";
 import {useFetchProofs} from "@/library/hooks/useMerkle";
 
@@ -26,13 +26,6 @@ export default function ClaimPage() {
       <h2 className="text-3xl tracking-tight text-text2">
         Select airdrop to claim
       </h2>
-      <div className="mt-4">
-        <ConnectWallet
-          theme="dark"
-          btnTitle="Connect Wallet"
-          className="hover:bg-accent1"
-        />
-      </div>
       <div className="flex flex-col max-w-screen-md w-full mx-auto mt-4">
         {proofs.length > 0 ? (
           proofs.map((proof: any) =>

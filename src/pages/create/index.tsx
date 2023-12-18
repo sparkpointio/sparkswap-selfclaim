@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ConnectWallet, useAddress, Web3Button,} from "@thirdweb-dev/react";
+import {useAddress, Web3Button,} from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/resources/components/NavigationMenu";
 import {formatInputRecipients, getMerkleInfo} from "@/library/utils/merkle.utils";
 import {useApproveToken, useTokenAllowance, useTokenContract} from "@/library/hooks/useToken";
@@ -41,16 +41,6 @@ export default function Home() {
       <h2 className="text-3xl tracking-tight text-text2">
         Create a Self-Claim Airdrop
       </h2>
-      <div className="mt-4">
-        <ConnectWallet
-          theme="dark"
-          btnTitle="Connect Wallet"
-          className="hover:bg-accent1"
-          auth={{
-            loginOptional: false
-          }}
-        />
-      </div>
       <div className="w-5/6 mx-auto">
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2 font-medium text-text1">
