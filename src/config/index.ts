@@ -12,15 +12,7 @@ const app: { environment: 'production' | 'development' | 'test' | string | undef
 /**
  * global API configs
  */
-const api = {
-  routes: {
-    config: {
-      api: {
-        bodyParser: false,
-      },
-    }
-  }
-}
+const api = {}
 
 const constants = {
   NETWORK: Binance,

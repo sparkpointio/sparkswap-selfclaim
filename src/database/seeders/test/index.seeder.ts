@@ -1,6 +1,5 @@
 import seedTestUsers from "@/database/seeders/test/user.seeder";
 import seedTestAirdrop from "@/database/seeders/test/airdrop.seeder";
-import seedTestAirdropUser from "@/database/seeders/test/airdropUser.seeder";
 import {TableNames} from "@/database/refreshDatabase";
 import {Prisma} from ".prisma/client";
 
@@ -8,7 +7,6 @@ export default async function seedDevData(table?: TableNames) {
   const seeders: any = {
     [Prisma.ModelName.User]: seedTestUsers,
     [Prisma.ModelName.Airdrop]: seedTestAirdrop,
-    [Prisma.ModelName.AirdropUser]: seedTestAirdropUser
   }
 
   if (table) {

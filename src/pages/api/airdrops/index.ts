@@ -19,4 +19,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 // force use formidable as parser
-export const config = conf.api.routes.config;
+export const config = {
+  api: {
+    bodyParser: false,
+  }
+}
