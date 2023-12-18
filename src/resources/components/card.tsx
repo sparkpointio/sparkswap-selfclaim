@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  ConnectWallet,
-  Web3Button,
-  useContractRead,
-  useContractEvents,
-  useContract,
-  useAddress,
-} from "@thirdweb-dev/react";
+import {Web3Button,} from "@thirdweb-dev/react";
 import contracts from "@/library/constants/contracts";
 
 /**
@@ -23,7 +16,7 @@ const Card: React.FC<{
   amount: string;
   buttonText: string;
   proof?: any[];
-}> = ({ id, token, amount, buttonText, proof = [] }) => {
+}> = ({id, token, amount, buttonText, proof = []}) => {
 
   return (
     <div className="flex-item mb-4 bg-background2 shadow-lg rounded-lg p-4 mx-auto">

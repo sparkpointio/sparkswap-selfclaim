@@ -2,9 +2,8 @@
 
 import React from "react";
 import Card from "@/resources/components/card";
-import {ConnectWallet, useAddress,} from "@thirdweb-dev/react";
+import {useAddress,} from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/resources/components/NavigationMenu";
-import {navigationLinks} from "../index";
 import {useFetchProofs} from "@/library/hooks/useMerkle";
 
 import {denormalizeAmt} from "@/library/utils/bignumber.utils";
@@ -19,7 +18,7 @@ export default function ClaimPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3">
-      <NavigationMenu navigationLinks={navigationLinks}/>
+      <NavigationMenu/>
 
       <h1 className="text-5xl font-bold tracking-tight text-text1 mt-28">
         Welcome, claimants
@@ -27,13 +26,6 @@ export default function ClaimPage() {
       <h2 className="text-3xl tracking-tight text-text2">
         Select airdrop to claim
       </h2>
-      <div className="mt-4">
-        <ConnectWallet
-          theme="dark"
-          btnTitle="Connect Wallet"
-          className="hover:bg-accent1"
-        />
-      </div>
       <div className="flex flex-col max-w-screen-md w-full mx-auto mt-4">
         {proofs.length > 0 ? (
           proofs.map((proof: any) =>

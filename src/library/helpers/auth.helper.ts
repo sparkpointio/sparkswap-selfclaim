@@ -5,7 +5,7 @@ import userModel, {assignRole, hasRole, UserWithRole} from "@/library/models/use
 import config from "@/config/index";
 import {RoleEnum} from "@/library/enums/roles.enum";
 
-type AuthUserSessionData = {
+export type AuthUserSessionData = {
   createdAt: Date | null;
   lastLoginAt: Date | null;
   id: number;

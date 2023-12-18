@@ -1,7 +1,6 @@
 import React, {useState} from "react";
-import {ConnectWallet, useAddress, Web3Button,} from "@thirdweb-dev/react";
+import {useAddress, Web3Button,} from "@thirdweb-dev/react";
 import {NavigationMenu} from "@/resources/components/NavigationMenu";
-import {navigationLinks} from "../index";
 import {formatInputRecipients, getMerkleInfo} from "@/library/utils/merkle.utils";
 import {useApproveToken, useTokenAllowance, useTokenContract} from "@/library/hooks/useToken";
 import tokens from "@/library/constants/tokens";
@@ -9,6 +8,9 @@ import contracts from "@/library/constants/contracts";
 import selfClaimFactory from "@/library/hooks/useSelfClaimFactory";
 import {erc20Abi} from "abitype/abis";
 import moment from "moment";
+import airdropHooks from "@/library/hooks/api-calls/useAirdrop";
+import {faker} from "@faker-js/faker";
+import {useAuthUser} from "@/library/hooks/useAuthUser";
 
 export default function Home() {
   // User's connected wallet address
@@ -32,20 +34,13 @@ export default function Home() {
   const {createSelfClaim, receipt} = selfClaimFactory.useCreateSelfClaim()
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
-      <NavigationMenu navigationLinks={navigationLinks}/>
+      <NavigationMenu/>
       <h1 className="text-5xl font-bold tracking-tight text-text1">
         Welcome, Airdrop Creators
       </h1>
       <h2 className="text-3xl tracking-tight text-text2">
         Create a Self-Claim Airdrop
       </h2>
-      <div className="mt-4">
-        <ConnectWallet
-          theme="dark"
-          btnTitle="Connect Wallet"
-          className="hover:bg-accent1"
-        />
-      </div>
       <div className="w-5/6 mx-auto">
         <div className="mb-4">
           <label htmlFor="name" className="block mb-2 font-medium text-text1">

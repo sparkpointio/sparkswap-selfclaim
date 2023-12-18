@@ -2,20 +2,15 @@ import React from "react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import Image from "next/image";
+import {ConnectWallet} from "@thirdweb-dev/react";
 
-interface NavigationLink {
-  href: string;
-  label: string;
-}
+export const navigationLinks = [
+  {href: "/", label: "Home"},
+  {href: "/claim", label: "Claim"},
+  {href: "/create", label: "Create"},
+];
 
-interface NavigationMenuProps {
-  navigationLinks: NavigationLink[];
-}
-
-export const NavigationMenu: React.FC<NavigationMenuProps> = (
-  {
-    navigationLinks,
-  }) => {
+export const NavigationMenu = () => {
   const router = useRouter();
 
   return (
@@ -32,7 +27,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = (
             />
           </div>
         </Link>
-        <ul className="flex space-x-6">
+        <ul className="flex space-x-6 items-center">
           {navigationLinks.map((link, index) => (
             <li key={link.href}>
               <Link href={link.href} passHref>
@@ -48,6 +43,13 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = (
               </Link>
             </li>
           ))}
+          <li>
+              <ConnectWallet
+                theme="dark"
+                btnTitle="Connect Wallet"
+                className="hover:bg-accent1"
+              />
+          </li>
         </ul>
       </div>
       {router.pathname === "/" && (

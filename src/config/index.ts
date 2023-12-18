@@ -25,7 +25,8 @@ const api = {
 const constants = {
   NETWORK: Binance,
   thirdweb: {
-    clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID ?? ''
+    clientId: process.env.NEXT_PUBLIC_THIRDWEB_CLIENT_ID ?? '',
+    authDomain: process.env.NEXT_PUBLIC_THIRDWEB_AUTH_DOMAIN ?? ''
   }
 }
 

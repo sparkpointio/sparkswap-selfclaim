@@ -9,7 +9,6 @@ export const {ThirdwebAuthHandler, getUser} = ThirdwebAuth({
   wallet: new PrivateKeyWallet(process.env.THIRDWEB_AUTH_PRIVATE_KEY || ""),
   callbacks: {
     onLogin: async (address): Promise<any> => {
-      console.log('login event')
       // save if new or update
       const user = await userModel.login({
         walletAddress: address
