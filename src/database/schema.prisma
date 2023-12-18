@@ -48,6 +48,7 @@ model RoleUser {
   @@index([roleId])
 }
 
+// todo: add payment method (feeTokenAddress and the amount
 model Airdrop {
   creator            User          @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   creatorId          Int

@@ -23,19 +23,27 @@ const airdropController = {
   store: async (req: NextApiRequest, res: NextApiResponse) => {
     const formData = await parseFormData(req)
 
+    const {
+      contractAddress,
+      merkleRoot,
+      tokenTotal,
+      tokenTotalHex,
+      rewardTokenAddress,
+      startsAt,
+      expiresAt
+    } = formData.primary;
+
     const validatedData = await airdropRequest.validate({
-      name: faker.word.noun() + ' Airdrop',
-      contractAddress: formData.primary.contractAddress[0],
-      merkleRoot: formData.primary.merkleRoot[0],
-      tokenTotal: formData.primary.tokenTotal[0],
-      tokenTotalHex: formData.primary.tokenTotalHex[0],
-      rewardTokenAddress: formData.primary.rewardTokenAddress[0],
-      startsAt: formData.primary.startsAt[0],
-      expiresAt: formData.primary.expiresAt[0],
-      // startsAt: config.selfclaim.start.toISOString(),
-      // expiresAt: config.selfclaim.expiry.toISOString(),
+      name: `${faker.word.noun()} Airdrop`,
+      contractAddress: contractAddress?.[0],
+      merkleRoot: merkleRoot?.[0],
+      tokenTotal: tokenTotal?.[0],
+      tokenTotalHex: tokenTotalHex?.[0],
+      rewardTokenAddress: rewardTokenAddress?.[0],
+      startsAt: startsAt?.[0],
+      expiresAt: expiresAt?.[0],
       creatorId: (await getAuthUser(req)).session.id
-    }, 'store')
+    }, 'store');
 
     const data = await airdropModel.create({
       data: validatedData

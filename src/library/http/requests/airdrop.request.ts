@@ -19,7 +19,7 @@ const rules = {
   }),
   store: z.object({
     name: z.string(),
-    contractAddress: z.string(),
+    contractAddress: z.string().optional(),
     merkleRoot: z.string(),
     tokenTotal: z.string(),
     tokenTotalHex: z.string(),
