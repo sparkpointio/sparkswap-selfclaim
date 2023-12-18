@@ -15,6 +15,7 @@ import {useAuthUser} from "@/library/hooks/useAuthUser";
 export default function Home() {
   // User's connected wallet address
   const wallet = useAddress();
+  const {user} = useAuthUser();
 
   // Form default values and value holders
   const [rewardTokenAddress, setRewardTokenAddress] = useState(
@@ -29,6 +30,8 @@ export default function Home() {
   // Event listeners for Token approval events
   const {approve} = useApproveToken()
   const {allowance} = useTokenAllowance(rewardToken.contract, contracts.selfClaimFactory.address)
+
+  const {postAirdrop, data, loading, error} = airdropHooks.useCreate();
 
   // Use contract for selfclaim airdrop contract
   const {createSelfClaim, receipt} = selfClaimFactory.useCreateSelfClaim()
@@ -105,20 +108,34 @@ export default function Home() {
             contractAddress={contracts.selfClaimFactory.address}
             contractAbi={contracts.selfClaimFactory.ABI}
             action={async (contract) => {
-              const {merkleRecipientList, totalAmountValue} = formatInputRecipients(recipients, rewardToken.decimals);
+              const {
+                merkleRecipientList,
+                totalAmountValue,
+                totalAmount
+              } = formatInputRecipients(recipients, rewardToken.decimals);
               const merkleInfo = getMerkleInfo(merkleRecipientList);
-              await createSelfClaim(contract, {
+              const expiry = moment().add(10)
+              await postAirdrop({
+                creatorId: 1,
+                name: faker.word.words(2) + " Airdrop",
+                rewardTokenAddress: rewardTokenAddress,
+                merkleRoot: merkleInfo.merkleRoot,
+                startsAt: expiry.toDate().toISOString(),
+                expiresAt: expiry.toDate().toISOString(),
+                tokenTotal: totalAmount,
+                tokenTotalHex: merkleInfo.tokenTotal
+              })
+              /*await createSelfClaim(contract, {
                 feeTokenAddress: selfClaimFactory.feeToken.primary.address,
                 rewardTokenAddress: rewardTokenAddress,
                 merkleRoot: merkleInfo.merkleRoot,
                 expiry: moment().add(10).unix().toString(),
                 totalAmount: totalAmountValue ?? '0'
-              })
+              })*/
             }}
-            onSuccess={(result) => alert("Created airdrop submitted")}
+            onSuccess={(result) => console.info("Created airdrop submitted")}
             onError={(error) => {
               console.error(error)
-              alert(error)
             }}
             className="bg-accent1 hover:bg-accent2"
           >
