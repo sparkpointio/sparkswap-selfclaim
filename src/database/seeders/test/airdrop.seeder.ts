@@ -9,7 +9,7 @@ type AirdropWithUsers = {
 
 export default async function seedTestAirdrop() {
   const airdropsWithUsers: AirdropWithUsers[] = []
-  const airdropsWithMerkle = await airdropFactory.create(1, 500)
+  const airdropsWithMerkle = await airdropFactory.create(1, 5)
 
   for (const airdropWithMerkle of airdropsWithMerkle) {
     airdropsWithUsers.push({

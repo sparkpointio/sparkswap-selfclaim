@@ -75,6 +75,26 @@ export const parseFormData = async (req: NextApiRequest): Promise<{ primary: any
     files: formData[1]
   }
 }
+/**
+ * this is just a basic implementation, it can't handle files or array of values just yet
+ * todo: add support for files and array of values
+ * @param formData
+ * @param fillable
+ */
+export const extractFormData = (formData: any, fillable?: string[]): { [key: string] : any } => {
+  const formEntry = formData.primary;
+  const inputData: any = {};
+
+  for (const [key, value] of Object.entries(formEntry) as Array<[string, any]>) {
+    if (fillable && fillable.includes(key)) {
+      inputData[key] = value?.[0];
+    } else {
+      inputData[key] = value?.[0];
+    }
+  }
+
+  return inputData;
+}
 
 export type HttpStatus = {
   code: any,
