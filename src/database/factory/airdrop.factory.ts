@@ -7,10 +7,7 @@ import {Amount} from "@thirdweb-dev/sdk";
 import {MerkleDistributorInfo} from "@medardm/merkle-distributor";
 import fs from "fs";
 import config from "@/config/index";
-import {
-  NewFormat as BalanceFormatNew,
-  OldFormat as BalanceFormatOld
-} from "@medardm/merkle-distributor/dist/parse-balance-map";
+import {OldFormat as BalanceFormatOld} from "@medardm/merkle-distributor/dist/parse-balance-map";
 import {TokenContract} from "@/library/hooks/useToken";
 import tokens from "@/library/constants/tokens";
 import {Address} from "@thirdweb-dev/react";
@@ -18,8 +15,7 @@ import {generateTestRecipients} from "@/library/helpers/test.helper";
 
 export type AirdropWithMerkle = {
   airdrop: Airdrop;
-  rewardToken: TokenContract;
-  merkleRecipientList: BalanceFormatNew[] | BalanceFormatOld,
+  rewardTokenAddress: Address;
   rawRecipientList: BalanceFormatOld,
   merkleInfo: MerkleDistributorInfo
 }
@@ -99,8 +95,7 @@ const airdropFactory = {
       // create set of airdrop with the merkle data which will be used when registering participants
       records.push({
         airdrop: await airdropModel.create(airdropFactory.definition),
-        rewardToken: rewardToken,
-        merkleRecipientList: merkleRecipientList,
+        rewardTokenAddress: rewardToken.address ?? tokens.srk.address,
         rawRecipientList: rawRecipientList,
         merkleInfo: merkleInfo
       })

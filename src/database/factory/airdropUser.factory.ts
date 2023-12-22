@@ -3,7 +3,7 @@ import airdropUserModel from "@/library/models/airdropUser.model";
 import {Prisma, AirdropUser, Airdrop, User} from "@prisma/client";
 import userFactory from "@/database/factory/user.factory";
 import airdropFactory, {AirdropWithMerkle} from "@/database/factory/airdrop.factory";
-import userModel from "@/library/models/user.model";
+import userModel, {assignUserListRole} from "@/library/models/user.model";
 import {Address} from "@thirdweb-dev/react";
 import roleUserModel from "@/library/models/roleUser.model";
 import {RoleEnum} from "@/library/enums/roles.enum";
@@ -48,39 +48,12 @@ const airdropUserFactory = {
       airdropWithMerkle = (await airdropFactory.create(1, 10))[0]
     }
 
-    // create users if they dont exist
-    const usersToCreate: Prisma.UserCreateManyInput[] = []
-    const userAddresses: Address[] = []
+    const userList = await userModel.createUsersFromMerkle(
+      airdropWithMerkle.merkleInfo,
+      airdropWithMerkle.airdrop.creatorId
+    )
 
-    for (const address in airdropWithMerkle.merkleInfo.claims) {
-      usersToCreate.push({
-        walletAddress: address,
-        creatorId: airdropWithMerkle.airdrop.creatorId
-      })
-      userAddresses.push(address)
-    }
-    await userModel.createMany({
-      data: usersToCreate,
-      skipDuplicates: true
-    })
-
-    const userList = await userModel.findMany({
-      where: {
-        walletAddress: {
-          in: userAddresses
-        }
-      }
-    })
-
-    const roleMap = userList.map(user => ({
-      userId: user.id,
-      roleId: RoleEnum.Standard
-    }));
-
-    await roleUserModel.createMany({
-      data: roleMap,
-      skipDuplicates: true
-    })
+    await assignUserListRole(userList)
 
     // create airdrop user entry
     await airdropUserModel.createManyWithMerkle(airdropWithMerkle, userList)

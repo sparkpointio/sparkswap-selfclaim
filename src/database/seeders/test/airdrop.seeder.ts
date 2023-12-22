@@ -1,4 +1,4 @@
-import airdropFactory, {AirdropWithMerkle} from "@/database/factory/airdrop.factory";
+import airdropFactory from "@/database/factory/airdrop.factory";
 import airdropUserFactory from "@/database/factory/airdropUser.factory";
 import {Airdrop, AirdropUser} from "@prisma/client";
 
