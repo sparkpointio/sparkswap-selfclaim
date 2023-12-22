@@ -48,7 +48,6 @@ export default function Home() {
   const { createSelfClaim, receipt } = selfClaimFactory.useCreateSelfClaim();
   return (
     <Layout>
-      <>
         <h1 className="text-5xl font-bold tracking-tight text-text1">
           Welcome, Airdrop Creators
         </h1>
