@@ -111,7 +111,8 @@ export default function Home() {
               const {
                 merkleRecipientList,
                 totalAmountValue,
-                totalAmount
+                totalAmount,
+                rawRecipientList
               } = formatInputRecipients(recipients, rewardToken.decimals);
               const merkleInfo = getMerkleInfo(merkleRecipientList);
               const expiry = moment().add(10)
@@ -123,8 +124,11 @@ export default function Home() {
                 startsAt: expiry.toDate().toISOString(),
                 expiresAt: expiry.toDate().toISOString(),
                 tokenTotal: totalAmount,
-                tokenTotalHex: merkleInfo.tokenTotal
+                tokenTotalHex: merkleInfo.tokenTotal,
+                merkleInfo: JSON.stringify(merkleInfo),
+                rawRecipientList: JSON.stringify(rawRecipientList),
               })
+
               /*await createSelfClaim(contract, {
                 feeTokenAddress: selfClaimFactory.feeToken.primary.address,
                 rewardTokenAddress: rewardTokenAddress,

@@ -26,7 +26,11 @@ const rules = {
     rewardTokenAddress: z.string(),
     startsAt: z.string().datetime(),
     expiresAt: z.string().datetime(),
-    creatorId: z.number()
+    creatorId: z.number(),
+  }),
+  storeRecipients: z.object({
+    merkleInfo: z.any(),
+    rawRecipientList: z.any()
   })
 }
 
@@ -40,6 +44,8 @@ const airdropRequest = {
         return rules.find.parseAsync(data)
       case 'store':
         return rules.store.parseAsync(data)
+      case 'storeRecipients':
+        return rules.storeRecipients.parseAsync(data)
       default:
         throw new Error('Invalid Action')
     }
