@@ -1,32 +1,11 @@
 import Link from "next/link";
-import {Inter} from "next/font/google";
 import Head from "next/head";
-import {useRouter} from "next/router";
-import {NavigationMenu} from "@/resources/components/NavigationMenu";
-
-const inter = Inter({subsets: ["latin"]});
+import Layout from "@/resources/components/layout/Layout";
 
 export default function Home() {
-  const router = useRouter();
-
   return (
-    <div
-      style={{
-        backgroundImage: `url('/hero-bg.png')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <NavigationMenu/>
-
-      <main
-        className={`flex min-h-screen flex-col items-center justify-center p-6 ${inter.className}`}
-      >
-        <Head>
-          <title>Self-Claim Airdrop | SparkSwap</title>
-          <link rel="icon" href="/SparkSwapLogo.png"/>
-        </Head>
-
+    <Layout>
+      <>
         <div className="text-center bg-background1 rounded-lg p-8 shadow-md">
           <h1 className="mb-4 text-4xl font-semibold leading-tight text-accent1">
             Welcome to SparkSwap Self-Claim Airdrop
@@ -63,7 +42,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </main>
-    </div>
+      </>
+    </Layout>
   );
 }

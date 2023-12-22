@@ -1,16 +1,24 @@
-import React, {useState} from "react";
-import {useAddress, Web3Button,} from "@thirdweb-dev/react";
-import {NavigationMenu} from "@/resources/components/NavigationMenu";
-import {formatInputRecipients, getMerkleInfo} from "@/library/utils/merkle.utils";
-import {useApproveToken, useTokenAllowance, useTokenContract} from "@/library/hooks/useToken";
+import React, { useState } from "react";
+import { useAddress, Web3Button } from "@thirdweb-dev/react";
+import { NavigationMenu } from "@/resources/components/NavigationMenu";
+import Layout from "@/resources/components/layout/Layout";
+import {
+  formatInputRecipients,
+  getMerkleInfo,
+} from "@/library/utils/merkle.utils";
+import {
+  useApproveToken,
+  useTokenAllowance,
+  useTokenContract,
+} from "@/library/hooks/useToken";
 import tokens from "@/library/constants/tokens";
 import contracts from "@/library/constants/contracts";
 import selfClaimFactory from "@/library/hooks/useSelfClaimFactory";
-import {erc20Abi} from "abitype/abis";
+import { erc20Abi } from "abitype/abis";
 import moment from "moment";
 import airdropHooks from "@/library/hooks/api-calls/useAirdrop";
-import {faker} from "@faker-js/faker";
-import {useAuthUser} from "@/library/hooks/useAuthUser";
+import { faker } from "@faker-js/faker";
+import { useAuthUser } from "@/library/hooks/useAuthUser";
 
 export default function Home() {
   // User's connected wallet address
@@ -28,36 +36,39 @@ export default function Home() {
   const rewardToken = useTokenContract(rewardTokenAddress);
 
   // Event listeners for Token approval events
-  const {approve} = useApproveToken()
-  const {allowance} = useTokenAllowance(rewardToken.contract, contracts.selfClaimFactory.address)
+  const { approve } = useApproveToken();
+  const { allowance } = useTokenAllowance(
+    rewardToken.contract,
+    contracts.selfClaimFactory.address
+  );
 
   const {postAirdrop, data, loading, error} = airdropHooks.useCreate();
 
   // Use contract for selfclaim airdrop contract
-  const {createSelfClaim, receipt} = selfClaimFactory.useCreateSelfClaim()
+  const { createSelfClaim, receipt } = selfClaimFactory.useCreateSelfClaim();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background3 mt-12">
-      <NavigationMenu/>
-      <h1 className="text-5xl font-bold tracking-tight text-text1">
-        Welcome, Airdrop Creators
-      </h1>
-      <h2 className="text-3xl tracking-tight text-text2">
-        Create a Self-Claim Airdrop
-      </h2>
-      <div className="w-5/6 mx-auto">
-        <div className="mb-4">
-          <label htmlFor="name" className="block mb-2 font-medium text-text1">
-            Token Address
-          </label>
-          <input
-            type="text"
-            id="rewardTokenAddress"
-            className="w-full px-3 py-2 border border-accent2 rounded-md text-text2 bg-background2"
-            value={rewardTokenAddress}
-            onChange={(e) => setRewardTokenAddress(e.target.value)}
-            placeholder="Enter token address..."
-          />
-        </div>
+    <Layout>
+      <>
+        <h1 className="text-5xl font-bold tracking-tight text-text1">
+          Welcome, Airdrop Creators
+        </h1>
+        <h2 className="text-3xl tracking-tight text-text2">
+          Create a Self-Claim Airdrop
+        </h2>
+        <div className="w-5/6 mx-auto">
+          <div className="mb-4">
+            <label htmlFor="name" className="block mb-2 font-medium text-text1">
+              Token Address
+            </label>
+            <input
+              type="text"
+              id="rewardTokenAddress"
+              className="w-full px-3 py-2 border border-accent2 rounded-md text-text2 bg-background2"
+              value={rewardTokenAddress}
+              onChange={(e) => setRewardTokenAddress(e.target.value)}
+              placeholder="Enter token address..."
+            />
+          </div>
 
         <div className="mb-4">
           <label
@@ -147,6 +158,6 @@ export default function Home() {
           </Web3Button>
         </div>
       </div>
-    </main>
+    </Layout>
   );
 }
