@@ -2,6 +2,9 @@ import prisma from "@/library/prisma";
 import {Prisma, Role, User} from "@prisma/client";
 import {RoleEnum} from "@/library/enums/roles.enum";
 import lodash from "@/library/utils/index.utils";
+import {MerkleDistributorInfo} from "@medardm/merkle-distributor";
+import {Address} from "@thirdweb-dev/react";
+import roleUserModel from "@/library/models/roleUser.model";
 
 /**
  * Roles is set thru prisma.ts in $extends
@@ -53,7 +56,40 @@ const userModel = {
   all: async (options?: Prisma.UserFindManyArgs): Promise<User[] | null> => {
     return prisma.user.findMany(options)
   },
+  createUsersFromMerkle: async (merkleInfo: MerkleDistributorInfo, creatorId?: number): Promise<User[]> => {
+    const usersToCreate: Prisma.UserCreateManyInput[] = [];
+    const userAddresses: Address[] = [];
+
+    // prepare users to create
+    for (const address in merkleInfo.claims) {
+      usersToCreate.push({
+        walletAddress: address,
+        creatorId: creatorId,
+      })
+      userAddresses.push(address);
+    }
+
+    // Create the users if they don't exist
+    await userModel.createMany({
+      data: usersToCreate,
+      skipDuplicates: true,
+    });
+
+    // Fetch the users just created
+    const userList = await userModel.findMany({
+      where: {
+        walletAddress: {
+          in: userAddresses,
+        },
+      },
+    });
+
+    await assignUserListRole(userList)
+
+    return userList;
+  }
 }
+
 
 /**
  * User traits
@@ -94,7 +130,7 @@ export const hasAllRoles = async (user: User, roles: RoleEnum[]) => {
 }
 
 export const assignRole = async (user: User, role: RoleEnum): Promise<UserWithRole> => {
-  return <UserWithRole><unknown> userModel.update({
+  return <UserWithRole><unknown>userModel.update({
     where: {
       walletAddress: user.walletAddress
     },
@@ -112,6 +148,22 @@ export const assignRole = async (user: User, role: RoleEnum): Promise<UserWithRo
       }
     }
   })
+}
+
+export const assignUserListRole = async (userList: User[], role: RoleEnum = RoleEnum.Standard): Promise<boolean> => {
+  // Create role mapping
+  const roleMap = userList.map((user) => ({
+    userId: user.id,
+    roleId: role,
+  }));
+
+  // Assign role to each user
+  await roleUserModel.createMany({
+    data: roleMap,
+    skipDuplicates: true,
+  });
+
+  return true
 }
 
 export default userModel

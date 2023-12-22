@@ -23,6 +23,7 @@ import { useAuthUser } from "@/library/hooks/useAuthUser";
 export default function Home() {
   // User's connected wallet address
   const wallet = useAddress();
+  const {user} = useAuthUser();
 
   // Form default values and value holders
   const [rewardTokenAddress, setRewardTokenAddress] = useState(
@@ -41,11 +42,12 @@ export default function Home() {
     contracts.selfClaimFactory.address
   );
 
+  const {postAirdrop, data, loading, error} = airdropHooks.useCreate();
+
   // Use contract for selfclaim airdrop contract
   const { createSelfClaim, receipt } = selfClaimFactory.useCreateSelfClaim();
   return (
     <Layout>
-      <>
         <h1 className="text-5xl font-bold tracking-tight text-text1">
           Welcome, Airdrop Creators
         </h1>
@@ -67,82 +69,94 @@ export default function Home() {
             />
           </div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="message"
-              className="block mb-2 font-medium text-text1"
-            >
-              List of Addresses in CSV
-            </label>
-            <textarea
-              id="message"
-              className="w-full px-3 py-2 border border-accent2 rounded-md text-text2 bg-background2"
-              rows={4}
-              value={recipients}
-              onChange={(e) => setRecipients(e.target.value)}
-            ></textarea>
-          </div>
-          <div className="mb-4 w-full">
-            <p>
-              Current Allowance: {allowance?.displayValue} {allowance?.symbol}
-            </p>
-            <Web3Button
-              connectWallet={{
-                btnTitle: "Approve selfclaim",
-                modalTitle: "Please connect your wallet first",
-              }}
-              contractAddress={rewardTokenAddress}
-              contractAbi={erc20Abi}
-              action={async (contract) => {
-                await approve(
-                  contract,
-                  contracts.selfClaimFactory.address,
-                  "1000"
-                );
-              }}
-              onSuccess={(result) => {
-                alert("tokens approved");
-              }}
-              onError={(error) =>
-                alert("Something went wrong (Approving tokens)!")
-              }
-              className="bg-accent1 hover:bg-accent2"
-            >
-              Approve selfclaim
-            </Web3Button>
-          </div>
-          <div className="mb-4 w-full">
-            <Web3Button
-              connectWallet={{
-                btnTitle: "Create Airdrop",
-                modalTitle: "Please connect your wallet first",
-              }}
-              contractAddress={contracts.selfClaimFactory.address}
-              contractAbi={contracts.selfClaimFactory.ABI}
-              action={async (contract) => {
-                const { merkleRecipientList, totalAmountValue } =
-                  formatInputRecipients(recipients, rewardToken.decimals);
-                const merkleInfo = getMerkleInfo(merkleRecipientList);
-                await createSelfClaim(contract, {
-                  feeTokenAddress: selfClaimFactory.feeToken.primary.address,
-                  rewardTokenAddress: rewardTokenAddress,
-                  merkleRoot: merkleInfo.merkleRoot,
-                  expiry: moment().add(10).unix().toString(),
-                  totalAmount: totalAmountValue ?? "0",
-                });
-              }}
-              onSuccess={(result) => alert("Created airdrop submitted")}
-              onError={(error) => {
-                console.error(error);
-                alert(error);
-              }}
-              className="bg-accent1 hover:bg-accent2"
-            >
-              Create airdrop
-            </Web3Button>
-          </div>
+        <div className="mb-4">
+          <label
+            htmlFor="message"
+            className="block mb-2 font-medium text-text1"
+          >
+            List of Addresses in CSV
+          </label>
+          <textarea
+            id="message"
+            className="w-full px-3 py-2 border border-accent2 rounded-md text-text2 bg-background2"
+            rows={4}
+            value={recipients}
+            onChange={(e) => setRecipients(e.target.value)}
+          ></textarea>
         </div>
-      </>
+        <div className="mb-4 w-full">
+          <p>
+            Current Allowance: {allowance?.displayValue} {allowance?.symbol}
+          </p>
+          <Web3Button
+            connectWallet={{
+              btnTitle: "Approve selfclaim",
+              modalTitle: 'Please connect your wallet first'
+            }}
+            contractAddress={rewardTokenAddress}
+            contractAbi={erc20Abi}
+            action={async (contract) => {
+              await approve(contract, contracts.selfClaimFactory.address, '1000');
+            }}
+            onSuccess={(result) => {
+              alert('tokens approved')
+            }}
+            onError={(error) =>
+              alert("Something went wrong (Approving tokens)!")
+            }
+            className="bg-accent1 hover:bg-accent2"
+          >
+            Approve selfclaim
+          </Web3Button>
+        </div>
+        <div className="mb-4 w-full">
+          <Web3Button
+            connectWallet={{
+              btnTitle: "Create Airdrop",
+              modalTitle: 'Please connect your wallet first'
+            }}
+            contractAddress={contracts.selfClaimFactory.address}
+            contractAbi={contracts.selfClaimFactory.ABI}
+            action={async (contract) => {
+              const {
+                merkleRecipientList,
+                totalAmountValue,
+                totalAmount,
+                rawRecipientList
+              } = formatInputRecipients(recipients, rewardToken.decimals);
+              const merkleInfo = getMerkleInfo(merkleRecipientList);
+              const expiry = moment().add(10)
+              await postAirdrop({
+                creatorId: 1,
+                name: faker.word.words(2) + " Airdrop",
+                rewardTokenAddress: rewardTokenAddress,
+                merkleRoot: merkleInfo.merkleRoot,
+                startsAt: expiry.toDate().toISOString(),
+                expiresAt: expiry.toDate().toISOString(),
+                tokenTotal: totalAmount,
+                tokenTotalHex: merkleInfo.tokenTotal,
+                merkleInfo: JSON.stringify(merkleInfo),
+                rawRecipientList: JSON.stringify(rawRecipientList),
+              })
+
+              /*await createSelfClaim(contract, {
+                feeTokenAddress: selfClaimFactory.feeToken.primary.address,
+                rewardTokenAddress: rewardTokenAddress,
+                merkleRoot: merkleInfo.merkleRoot,
+                expiry: moment().add(10).unix().toString(),
+                totalAmount: totalAmountValue ?? '0'
+              })*/
+            }}
+            onSuccess={(result) => console.info("Created airdrop submitted")}
+            onError={(error) => {
+              console.error(error)
+            }}
+            className="bg-accent1 hover:bg-accent2"
+          >
+            Create airdrop
+          </Web3Button>
+        </div>
+      </div>
     </Layout>
   );
 }

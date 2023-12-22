@@ -10,8 +10,8 @@ import {normalizeAmt, toBigNumber} from "@/library/utils/bignumber.utils";
 export function formatInputRecipients(inputString: string, decimals = 18, useOldFormat: boolean = true): {
   merkleRecipientList: BalanceFormatNew[] | BalanceFormatOld,
   rawRecipientList: BalanceFormatOld,
-  totalAmount: Amount
-  totalAmountValue: Amount
+  totalAmount: string
+  totalAmountValue: string
 } {
   const lines = inputString.split('\n');
   let totalAmount = toBigNumber(0);
